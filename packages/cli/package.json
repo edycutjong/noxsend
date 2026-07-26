@@ -1,0 +1,16 @@
+{
+  "name": "@noxsend/cli",
+  "version": "1.0.0",
+  "description": "Headless CLI to drive NoxSend flows over @noxsend/core.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "noxsend": "./src/index.ts"
+  },
+  "dependencies": {
+    "@noxsend/core": "*",
+    "@iexec-nox/handle": "^0.1.0-beta.13",
+    "dotenv": "^17.4.2",
+    "ethers": "^6.17.0"
+  }
+}

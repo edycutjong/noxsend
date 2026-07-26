@@ -1,0 +1,196 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 320" width="1280" height="320" role="img" aria-label="NoxSend — private send for the wallet you already have. The explorer sees a 32-byte handle; only you see the amount.">
+  <defs>
+    <linearGradient id="plate" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a0016"/><stop offset="0.5" stop-color="#0b1220"/><stop offset="1" stop-color="#03110f"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#5eead4"/><stop offset="0.45" stop-color="#14b8a6"/><stop offset="1" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="sendGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#5eead4"/><stop offset="0.5" stop-color="#22d3ee"/><stop offset="1" stop-color="#a78bfa"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <linearGradient id="planeTop" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5eead4"/><stop offset="1" stop-color="#14b8a6"/></linearGradient>
+    <linearGradient id="planeBot" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0d9488"/><stop offset="1" stop-color="#0f766e"/></linearGradient>
+    <linearGradient id="beam" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#5eead4" stop-opacity="0"/><stop offset="0.5" stop-color="#5eead4" stop-opacity="0.5"/><stop offset="1" stop-color="#5eead4" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="packet" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffffff"/><stop offset="0.5" stop-color="#5eead4"/><stop offset="1" stop-color="#14b8a6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="auroraT" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#14b8a6" stop-opacity="0.6"/><stop offset="1" stop-color="#14b8a6" stop-opacity="0"/></radialGradient>
+    <radialGradient id="auroraV" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#8b5cf6" stop-opacity="0.6"/><stop offset="1" stop-color="#8b5cf6" stop-opacity="0"/></radialGradient>
+    <pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="1" y="0" fill="#0a1a1c" opacity="0.5"/></pattern>
+    <!-- outlined wordmark glyph paths (Space Grotesk 700, size 72, baseline-anchored) -->
+    <path id="wm-nox" d="M14.11 0L4.75 0L4.75-50.40L22.82-50.40L32.83-6.48L34.13-6.48L34.13-50.40L43.49-50.40L43.49 0L25.42 0L15.41-43.92L14.11-43.92L14.11 0ZM70.27 1.01L70.27 1.01Q64.94 1.01 60.70-1.15Q56.45-3.31 54.00-7.42Q51.55-11.52 51.55-17.28L51.55-17.28L51.55-18.43Q51.55-24.19 54.00-28.30Q56.45-32.40 60.70-34.56Q64.94-36.72 70.27-36.72L70.27-36.72Q75.60-36.72 79.85-34.56Q84.10-32.40 86.54-28.30Q88.99-24.19 88.99-18.43L88.99-18.43L88.99-17.28Q88.99-11.52 86.54-7.42Q84.10-3.31 79.85-1.15Q75.60 1.01 70.27 1.01ZM70.27-7.06L70.27-7.06Q74.45-7.06 77.18-9.76Q79.92-12.46 79.92-17.50L79.92-17.50L79.92-18.22Q79.92-23.26 77.22-25.96Q74.52-28.66 70.27-28.66L70.27-28.66Q66.10-28.66 63.36-25.96Q60.62-23.26 60.62-18.22L60.62-18.22L60.62-17.50Q60.62-12.46 63.36-9.76Q66.10-7.06 70.27-7.06ZM102.53 0L91.87 0L104.83-18.00L92.02-35.71L102.53-35.71L110.66-23.83L111.96-23.83L120.10-35.71L130.61-35.71L117.79-18.00L130.75 0L120.10 0L111.96-12.02L110.66-12.02L102.53 0Z"/>
+    <path id="wm-send" d="M22.25 1.01L22.25 1.01Q16.42 1.01 11.95-1.08Q7.49-3.17 4.97-7.06Q2.45-10.94 2.45-16.42L2.45-16.42L2.45-18.43L11.81-18.43L11.81-16.42Q11.81-11.88 14.62-9.61Q17.42-7.34 22.25-7.34L22.25-7.34Q27.14-7.34 29.56-9.29Q31.97-11.23 31.97-14.26L31.97-14.26Q31.97-16.34 30.78-17.64Q29.59-18.94 27.32-19.76Q25.06-20.59 21.82-21.31L21.82-21.31L20.16-21.67Q14.98-22.82 11.27-24.59Q7.56-26.35 5.58-29.23Q3.60-32.11 3.60-36.72L3.60-36.72Q3.60-41.33 5.80-44.60Q7.99-47.88 11.99-49.64Q15.98-51.41 21.38-51.41L21.38-51.41Q26.78-51.41 31.00-49.57Q35.21-47.74 37.62-44.10Q40.03-40.46 40.03-34.99L40.03-34.99L40.03-32.83L30.67-32.83L30.67-34.99Q30.67-37.87 29.56-39.64Q28.44-41.40 26.35-42.23Q24.26-43.06 21.38-43.06L21.38-43.06Q17.06-43.06 15.01-41.44Q12.96-39.82 12.96-37.01L12.96-37.01Q12.96-35.14 13.93-33.84Q14.90-32.54 16.85-31.68Q18.79-30.82 21.82-30.17L21.82-30.17L23.47-29.81Q28.87-28.66 32.87-26.86Q36.86-25.06 39.10-22.10Q41.33-19.15 41.33-14.54L41.33-14.54Q41.33-9.94 38.99-6.44Q36.65-2.95 32.36-0.97Q28.08 1.01 22.25 1.01ZM64.94 1.01L64.94 1.01Q59.62 1.01 55.55-1.26Q51.48-3.53 49.21-7.67Q46.94-11.81 46.94-17.42L46.94-17.42L46.94-18.29Q46.94-23.90 49.18-28.04Q51.41-32.18 55.44-34.45Q59.47-36.72 64.80-36.72L64.80-36.72Q70.06-36.72 73.94-34.38Q77.83-32.04 79.99-27.90Q82.15-23.76 82.15-18.29L82.15-18.29L82.15-15.19L56.16-15.19Q56.30-11.52 58.90-9.22Q61.49-6.91 65.23-6.91L65.23-6.91Q69.05-6.91 70.85-8.57Q72.65-10.22 73.58-12.24L73.58-12.24L81-8.35Q79.99-6.48 78.08-4.28Q76.18-2.09 73.01-0.54Q69.84 1.01 64.94 1.01ZM56.23-21.96L56.23-21.96L72.94-21.96Q72.65-25.06 70.45-26.93Q68.26-28.80 64.73-28.80L64.73-28.80Q61.06-28.80 58.90-26.93Q56.74-25.06 56.23-21.96ZM99.29 0L90.22 0L90.22-35.71L99.14-35.71L99.14-31.03L100.44-31.03Q101.30-32.90 103.68-34.60Q106.06-36.29 110.88-36.29L110.88-36.29Q115.06-36.29 118.19-34.38Q121.32-32.47 123.05-29.12Q124.78-25.78 124.78-21.31L124.78-21.31L124.78 0L115.70 0L115.70-20.59Q115.70-24.62 113.72-26.64Q111.74-28.66 108.07-28.66L108.07-28.66Q103.90-28.66 101.59-25.88Q99.29-23.11 99.29-18.14L99.29-18.14L99.29 0ZM148.97 1.01L148.97 1.01Q144.72 1.01 141.01-1.12Q137.30-3.24 135.07-7.34Q132.84-11.45 132.84-17.28L132.84-17.28L132.84-18.43Q132.84-24.26 135.07-28.37Q137.30-32.47 140.98-34.60Q144.65-36.72 148.97-36.72L148.97-36.72Q152.21-36.72 154.40-35.96Q156.60-35.21 157.97-34.06Q159.34-32.90 160.06-31.61L160.06-31.61L161.35-31.61L161.35-50.40L170.42-50.40L170.42 0L161.50 0L161.50-4.32L160.20-4.32Q158.98-2.30 156.42-0.65Q153.86 1.01 148.97 1.01ZM151.70-6.91L151.70-6.91Q155.88-6.91 158.69-9.61Q161.50-12.31 161.50-17.50L161.50-17.50L161.50-18.22Q161.50-23.40 158.72-26.10Q155.95-28.80 151.70-28.80L151.70-28.80Q147.53-28.80 144.72-26.10Q141.91-23.40 141.91-18.22L141.91-18.22L141.91-17.50Q141.91-12.31 144.72-9.61Q147.53-6.91 151.70-6.91Z"/>
+    <clipPath id="sendClip"><use href="#wm-send" x="138.62"/></clipPath>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="3.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="soft" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="34"/></filter>
+    <filter id="trail" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3.2"/></filter>
+    <clipPath id="plateClip"><rect x="0" y="0" width="1280" height="320" rx="26"/></clipPath>
+    <g id="lk"><rect x="0" y="5.4" width="11" height="7.8" rx="1.6" fill="currentColor"/><path d="M2.2 5.4 V3.6 A3.3 3.3 0 0 1 8.8 3.6 V5.4" fill="none" stroke="currentColor" stroke-width="1.5"/></g>
+    <style>
+      @keyframes metricPulse{0%,100%{opacity:.6}50%{opacity:1}}
+      @keyframes twinkle{0%,100%{opacity:.25}50%{opacity:.9}}
+      @keyframes sunb{0%,100%{opacity:.26}50%{opacity:.4}}
+      @keyframes markBreath{0%,100%{opacity:.32}82%{opacity:.7}}
+      @keyframes glitch{0%,7%,60%,100%{transform:translate(0,0)}61%{transform:translate(-2px,0)}63%{transform:translate(2px,1px)}65%{transform:translate(-1px,-1px)}8%{transform:translate(1.5px,0)}10%{transform:translate(-1.5px,0)}12%{transform:translate(0,0)}}
+      .mp{animation:metricPulse 8s ease-in-out infinite}
+      .tw{animation:twinkle 8s ease-in-out infinite}
+      .sunb{animation:sunb 8s ease-in-out infinite}
+      .mb{animation:markBreath 8s ease-in-out infinite}
+      .wm-main{animation:glitch 8s steps(1,end) infinite}
+      @media (prefers-reduced-motion: reduce){*{animation:none !important}}
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1280" height="320" rx="26" fill="url(#plate)"/>
+  <g clip-path="url(#plateClip)">
+    <!-- aurora blobs -->
+    <circle cx="300" cy="120" r="150" fill="url(#auroraT)" filter="url(#soft)"><animate attributeName="cx" values="300;360;300" dur="17s" repeatCount="indefinite"/></circle>
+    <circle cx="1050" cy="230" r="160" fill="url(#auroraV)" filter="url(#soft)"><animate attributeName="cy" values="230;180;230" dur="15s" repeatCount="indefinite"/></circle>
+    <!-- stars -->
+    <g fill="#e2f7f5">
+      <circle class="tw" cx="180" cy="46" r="1.6"/><circle class="tw" cx="520" cy="40" r="1.4" style="animation-delay:-2s"/>
+      <circle class="tw" cx="760" cy="56" r="1.8" style="animation-delay:-3s"/><circle class="tw" cx="1120" cy="44" r="1.5" style="animation-delay:-1s"/>
+      <circle class="tw" cx="960" cy="70" r="1.3" style="animation-delay:-4s"/><circle class="tw" cx="640" cy="30" r="1.3" style="animation-delay:-2.6s"/>
+    </g>
+    <!-- retro sun behind story -->
+    <g>
+      <circle class="sunb" cx="900" cy="150" r="210" fill="url(#sun)"/>
+      <g fill="#03110f" opacity="0.85"><rect x="690" y="150" width="420" height="6"/><rect x="690" y="166" width="420" height="8"/><rect x="690" y="186" width="420" height="10"/></g>
+    </g>
+    <!-- horizon + perspective grid floor -->
+    <rect x="0" y="150" width="1280" height="3" fill="url(#edge)" opacity="0.9" filter="url(#glow)"/>
+    <g stroke="#7c3aed" stroke-width="1.4" opacity="0.22">
+      <line x1="900" y1="150" x2="120" y2="330"/><line x1="900" y1="150" x2="470" y2="330"/><line x1="900" y1="150" x2="760" y2="330"/>
+      <line x1="900" y1="150" x2="900" y2="330"/><line x1="900" y1="150" x2="1080" y2="330"/><line x1="900" y1="150" x2="1360" y2="330"/><line x1="900" y1="150" x2="1720" y2="330"/>
+    </g>
+    <g fill="#7c3aed">
+      <rect x="-40" width="1360" height="2"><animate attributeName="y" values="150;156;174;207;256;322" keyTimes="0;0.2;0.4;0.6;0.8;1" dur="8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.18;0.28;0.34;0.32;0" keyTimes="0;0.1;0.4;0.7;0.92;1" dur="8s" repeatCount="indefinite"/></rect>
+      <rect x="-40" width="1360" height="2"><animate attributeName="y" values="150;156;174;207;256;322" keyTimes="0;0.2;0.4;0.6;0.8;1" dur="8s" repeatCount="indefinite" begin="-1.6s"/><animate attributeName="opacity" values="0;0.18;0.28;0.34;0.32;0" keyTimes="0;0.1;0.4;0.7;0.92;1" dur="8s" repeatCount="indefinite" begin="-1.6s"/></rect>
+      <rect x="-40" width="1360" height="2"><animate attributeName="y" values="150;156;174;207;256;322" keyTimes="0;0.2;0.4;0.6;0.8;1" dur="8s" repeatCount="indefinite" begin="-3.2s"/><animate attributeName="opacity" values="0;0.18;0.28;0.34;0.32;0" keyTimes="0;0.1;0.4;0.7;0.92;1" dur="8s" repeatCount="indefinite" begin="-3.2s"/></rect>
+      <rect x="-40" width="1360" height="2"><animate attributeName="y" values="150;156;174;207;256;322" keyTimes="0;0.2;0.4;0.6;0.8;1" dur="8s" repeatCount="indefinite" begin="-4.8s"/><animate attributeName="opacity" values="0;0.18;0.28;0.34;0.32;0" keyTimes="0;0.1;0.4;0.7;0.92;1" dur="8s" repeatCount="indefinite" begin="-4.8s"/></rect>
+      <rect x="-40" width="1360" height="2"><animate attributeName="y" values="150;156;174;207;256;322" keyTimes="0;0.2;0.4;0.6;0.8;1" dur="8s" repeatCount="indefinite" begin="-6.4s"/><animate attributeName="opacity" values="0;0.18;0.28;0.34;0.32;0" keyTimes="0;0.1;0.4;0.7;0.92;1" dur="8s" repeatCount="indefinite" begin="-6.4s"/></rect>
+    </g>
+    <!-- scanlines -->
+    <rect x="0" y="0" width="1280" height="320" fill="url(#scan)" opacity="0.35"/>
+    <!-- beam sweep (one per loop) -->
+    <rect x="-260" y="0" width="220" height="320" fill="url(#beam)" opacity="0.5" transform="skewX(-18)">
+      <animate attributeName="x" values="-300;-300;1500;1500" keyTimes="0;0.12;0.5;1" dur="8s" repeatCount="indefinite"/>
+    </rect>
+
+    <!-- ================= RIGHT: STORY ================= -->
+    <!-- pipeline rail -->
+    <line x1="600" y1="104" x2="1196" y2="104" stroke="#1f6b6b" stroke-width="2" stroke-dasharray="2 6" opacity="0.8"/>
+    <!-- node A: wallet -->
+    <g>
+      <rect x="576" y="86" width="48" height="36" rx="7" fill="#0e2a2b" stroke="#14b8a6" stroke-width="1.6"/>
+      <rect x="576" y="86" width="48" height="11" rx="5" fill="#14b8a6" opacity="0.5"/>
+      <circle cx="614" cy="108" r="3.5" fill="#5eead4"/>
+      <text x="600" y="140" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#7fb5b0">wallet</text>
+    </g>
+    <!-- TEE gate -->
+    <g>
+      <path d="M838 80 L864 94 L864 118 L838 132 L812 118 L812 94 Z" fill="#160f2b" stroke="#8b5cf6" stroke-width="1.8">
+        <animate attributeName="stroke" values="#8b5cf6;#c4b5fd;#8b5cf6;#8b5cf6" keyTimes="0;0.42;0.5;1" dur="8s" repeatCount="indefinite"/>
+      </path>
+      <rect x="830" y="102" width="16" height="13" rx="2.5" fill="none" stroke="#a78bfa" stroke-width="1.8"/>
+      <path d="M833 102 v-4 a5 5 0 0 1 10 0 v4" fill="none" stroke="#a78bfa" stroke-width="1.8"/>
+      <text x="838" y="152" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#a996d8">TEE · TDX</text>
+    </g>
+    <!-- node C: on-chain block -->
+    <g>
+      <path d="M1044 82 L1070 96 L1070 112 L1044 126 L1018 112 L1018 96 Z" fill="#0e1830" stroke="#22d3ee" stroke-width="1.6"/>
+      <text x="1044" y="108" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="10" fill="#8b5cf6">0x·</text><use href="#lk" transform="translate(1050,97.5) scale(0.8)" color="#a78bfa"/>
+      <text x="1044" y="140" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#7fb5b0">on-chain</text>
+    </g>
+    <!-- node D: recipient -->
+    <g>
+      <rect x="1174" y="86" width="44" height="36" rx="7" fill="#0e2a2b" stroke="#14b8a6" stroke-width="1.6"/>
+      <circle cx="1196" cy="100" r="5" fill="none" stroke="#5eead4" stroke-width="1.6"/>
+      <path d="M1187 116 a9 9 0 0 1 18 0" fill="none" stroke="#5eead4" stroke-width="1.6"/>
+      <text x="1196" y="140" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#7fb5b0">recipient</text>
+    </g>
+    <!-- packet comet along the rail -->
+    <g>
+      <circle r="15" fill="url(#packet)" filter="url(#trail)"/>
+      <circle r="5" fill="#ffffff"><animate attributeName="fill" values="#ffffff;#ffffff;#a78bfa;#a78bfa" keyTimes="0;0.42;0.5;1" dur="8s" repeatCount="indefinite"/></circle>
+      <animateMotion path="M600 104 L1196 104" keyPoints="0;0;1;1" keyTimes="0;0.14;0.74;1" dur="8s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.13;0.16;0.74;0.8;1" dur="8s" repeatCount="indefinite"/>
+    </g>
+
+    <!-- two-truths split -->
+    <!-- PUBLIC pane -->
+    <g>
+      <rect x="592" y="176" width="296" height="104" rx="12" fill="#0b0f1a" fill-opacity="0.72" stroke="#243247" stroke-width="1.4"/>
+      <text x="612" y="204" font-family="'Segoe UI',system-ui,-apple-system,sans-serif" font-size="12" letter-spacing="2" fill="#64748b">WHAT THE EXPLORER SEES</text>
+      <text x="612" y="240" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="14" fill="#8b95a7">amount</text>
+      <rect x="612" y="250" width="182" height="22" rx="6" fill="#1a1330" stroke="#8b5cf6" stroke-width="1.3"/>
+      <text x="622" y="266" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" fill="#c4b5fd">0x3fa4…e91b</text><use href="#lk" x="724" y="254.5" color="#c4b5fd"/>
+    </g>
+    <!-- YOU pane -->
+    <g>
+      <rect x="904" y="176" width="312" height="104" rx="12" fill="#08161a" fill-opacity="0.72" stroke="#14b8a6" stroke-width="1.6"/>
+      <text x="924" y="204" font-family="'Segoe UI',system-ui,-apple-system,sans-serif" font-size="12" letter-spacing="2" fill="#5eb6ad">WHAT ONLY YOU SEE</text>
+      <text x="924" y="240" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="14" fill="#8b95a7">amount</text>
+      <!-- sealed state (fades out on decrypt) -->
+      <g><animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.72;0.8;0.96;1" dur="8s" repeatCount="indefinite"/>
+        <rect x="924" y="250" width="150" height="22" rx="6" fill="#1a1330" stroke="#8b5cf6" stroke-width="1.3"/>
+        <text x="934" y="266" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" fill="#c4b5fd">•••• cUSD</text><use href="#lk" x="1012" y="254.5" color="#c4b5fd"/>
+      </g>
+      <!-- decrypted state -->
+      <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.74;0.82;0.96;1" dur="8s" repeatCount="indefinite"/>
+        <text x="924" y="268" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="22" font-weight="700" fill="#5eead4">1,850.00 USDC</text>
+      </g>
+    </g>
+
+    <!-- ================= LEFT: BRAND ================= -->
+    <!-- glow-breath duplicate of mini mark -->
+    <g class="mb" filter="url(#soft)">
+      <rect x="58" y="92" width="68" height="52" rx="14" fill="#14b8a6"/>
+      <path d="M74 92 L74 74 A18 18 0 0 1 110 74 L110 92" fill="none" stroke="#7c3aed" stroke-width="9"/>
+    </g>
+    <!-- mini mark -->
+    <g filter="url(#glow)">
+      <path d="M74 92 L74 74 A18 18 0 0 1 110 74 L110 92" fill="none" stroke="#8b5cf6" stroke-width="9" stroke-linecap="round"/>
+      <rect x="58" y="92" width="68" height="52" rx="14" fill="#0e2a2b" stroke="url(#edge)" stroke-width="2"/>
+      <g transform="translate(92,118) rotate(-18) scale(2.7) translate(-12,-12)">
+        <path d="M2 3 L23 12 L17 12 L2 10 Z" fill="url(#planeTop)"/>
+        <path d="M2 21 L23 12 L17 12 L2 14 Z" fill="url(#planeBot)"/>
+      </g>
+    </g>
+
+    <!-- outlined wordmark: Nox (white) + Send (gradient) -->
+    <g transform="translate(156,124)">
+      <!-- chromatic ghosts -->
+      <g fill="#22d3ee" opacity="0.32" transform="translate(-2.6,0)"><use href="#wm-nox"/><use href="#wm-send" x="138.62"/></g>
+      <g fill="#8b5cf6" opacity="0.32" transform="translate(2.6,0)"><use href="#wm-nox"/><use href="#wm-send" x="138.62"/></g>
+      <!-- main -->
+      <g class="wm-main">
+        <use href="#wm-nox" fill="#f1f5f9"/>
+        <use href="#wm-send" x="138.62" fill="url(#sendGrad)"/>
+        <!-- shimmer sweep over Send -->
+        <g clip-path="url(#sendClip)">
+          <rect x="120" y="-54" width="34" height="62" fill="#ffffff" opacity="0.55" transform="skewX(-20)">
+            <animate attributeName="x" values="110;110;330;330" keyTimes="0;0.28;0.5;1" dur="8s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0;0;0.6;0;0" keyTimes="0;0.28;0.4;0.52;1" dur="8s" repeatCount="indefinite"/>
+          </rect>
+        </g>
+      </g>
+    </g>
+
+    <!-- tagline -->
+    <text x="60" y="176" font-family="'Segoe UI',system-ui,-apple-system,sans-serif" font-size="19" font-weight="600" fill="#dbe7e6">Private send for the wallet you already have.</text>
+    <!-- hero metric (pulsing) -->
+    <text class="mp" x="60" y="206" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13.5" fill="#5eead4">Etherscan sees 32 bytes. Your landlord sees nothing.</text>
+    <!-- divider -->
+    <rect x="60" y="224" width="360" height="1" fill="#1f6b6b" opacity="0.5"/>
+    <!-- tech pills -->
+    <text x="60" y="250" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="12.5" fill="#5b7d7a" letter-spacing="0.4">iExec Nox · ERC-7984 · Intel TDX · Sepolia · wagmi</text>
+  </g>
+  <rect x="0.75" y="0.75" width="1278.5" height="318.5" rx="25.5" fill="none" stroke="#2a3550" stroke-width="1.5" opacity="0.7"/>
+</svg>

@@ -1,0 +1,53 @@
+{
+  "name": "noxsend-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "NoxSend — private send for the wallet you already have (iExec Nox / WTF!! Hackathon)",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*",
+    "web"
+  ],
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "vitest run --root packages/core",
+    "test:contracts": "hardhat test",
+    "coverage": "hardhat coverage",
+    "coverage:check": "hardhat coverage && node scripts/check-coverage.mjs",
+    "test:all": "npm test && npm run test:contracts",
+    "gateway-smoke": "node scripts/gateway-smoke.mjs",
+    "deploy": "node scripts/deploy.mjs",
+    "e2e": "node scripts/e2e.mjs",
+    "seed": "node scripts/seed.mjs",
+    "bench": "node scripts/bench.mjs",
+    "check-readiness": "node scripts/check_submission_readiness.mjs",
+    "verify:contracts": "node scripts/verify-contracts.mjs",
+    "cli": "tsx packages/cli/src/index.ts",
+    "lint": "npm --prefix web run lint",
+    "typecheck": "npm --prefix web run typecheck",
+    "build:web": "npm --prefix web run build",
+    "start:web": "npm --prefix web run start",
+    "e2e:web": "playwright test",
+    "e2e:web:ui": "playwright test --ui",
+    "lighthouse": "lhci autorun",
+    "ci": "npm run lint && npm run typecheck && npm run test:all"
+  },
+  "dependencies": {
+    "@iexec-nox/handle": "^0.1.0-beta.13",
+    "dotenv": "^17.4.2",
+    "ethers": "^6.17.0"
+  },
+  "devDependencies": {
+    "@iexec-nox/nox-confidential-contracts": "^0.2.2",
+    "@iexec-nox/nox-protocol-contracts": "^0.2.4",
+    "@lhci/cli": "^0.14.0",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@playwright/test": "^1.52.0",
+    "@types/node": "^22.20.1",
+    "hardhat": "^2.28.6",
+    "solidity-coverage": "^0.8.17",
+    "tsx": "^4.23.0",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7"
+  }
+}

@@ -1,0 +1,49 @@
+# --- secrets: NEVER commit ---
+.env
+.env.*
+!.env.example
+
+# deps
+node_modules/
+**/node_modules/
+
+# hardhat / build
+artifacts/
+cache/
+typechain-types/
+coverage/
+coverage.json
+out/
+
+# next.js
+.next/
+web/.next/
+web/out/
+dist/
+build/
+
+# misc
+.DS_Store
+*.log
+npm-debug.log*
+.vercel
+.idea/
+.vscode/
+
+# generated assets
+assets/
+
+# playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# lighthouse
+.lighthouseci/
+
+# typescript build info
+*.tsbuildinfo
+
+# generated brand assets (kitchen) — README/metadata use docs/ + web/public copies
+docs/assets/

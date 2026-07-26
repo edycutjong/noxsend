@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="NoxSend animated mark — a sealed padlock launching a private send">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0a0016"/>
+      <stop offset="0.55" stop-color="#0b1220"/>
+      <stop offset="1" stop-color="#03110f"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#5eead4"/>
+      <stop offset="0.5" stop-color="#14b8a6"/>
+      <stop offset="1" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="planeTop" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5eead4"/><stop offset="1" stop-color="#14b8a6"/>
+    </linearGradient>
+    <linearGradient id="planeBot" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d9488"/><stop offset="1" stop-color="#0f766e"/>
+    </linearGradient>
+    <linearGradient id="shackle" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#a78bfa"/><stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0e2a2b"/><stop offset="1" stop-color="#08181c"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <radialGradient id="packet" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffffff"/><stop offset="0.5" stop-color="#5eead4"/><stop offset="1" stop-color="#14b8a6" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="soft" x="-70%" y="-70%" width="240%" height="240%"><feGaussianBlur stdDeviation="15"/></filter>
+    <filter id="trail" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>
+    <clipPath id="badge"><rect x="24" y="24" width="464" height="464" rx="112"/></clipPath>
+    <style>
+      @keyframes breathe { 0%,100%{opacity:.28} 82%{opacity:.72} }
+      @keyframes sunbreath { 0%,100%{opacity:.34} 50%{opacity:.5} }
+      @keyframes twinkle { 0%,100%{opacity:.25} 50%{opacity:.9} }
+      @keyframes seal { 0%,18%{transform:scale(1)} 24%{transform:scale(1.06)} 34%,100%{transform:scale(1)} }
+      @keyframes strippulse { 0%,100%{opacity:.5} 50%{opacity:1} }
+      .breath{animation:breathe 6s ease-in-out infinite}
+      .sunb{animation:sunbreath 6s ease-in-out infinite}
+      .tw{animation:twinkle 6s ease-in-out infinite}
+      .sealg{animation:seal 6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+      .strip{animation:strippulse 6s ease-in-out infinite}
+      @media (prefers-reduced-motion: reduce){*{animation:none !important}}
+    </style>
+  </defs>
+
+  <rect x="24" y="24" width="464" height="464" rx="112" fill="url(#bg)"/>
+  <g clip-path="url(#badge)">
+    <circle class="sunb" cx="256" cy="248" r="150" fill="url(#sun)"/>
+    <g fill="#03110f" opacity="0.9">
+      <rect x="106" y="250" width="300" height="8"/><rect x="106" y="270" width="300" height="10"/><rect x="106" y="294" width="300" height="12"/>
+    </g>
+    <!-- scrolling perspective grid (seamless: shifts one cell over the loop) -->
+    <g stroke="#7c3aed" stroke-width="2" opacity="0.36">
+      <line x1="256" y1="330" x2="-140" y2="500"/><line x1="256" y1="330" x2="90" y2="500"/>
+      <line x1="256" y1="330" x2="256" y2="500"/><line x1="256" y1="330" x2="422" y2="500"/>
+      <line x1="256" y1="330" x2="652" y2="500"/>
+    </g>
+    <g fill="#7c3aed">
+      <rect x="-60" width="640" height="2.4"><animate attributeName="y" values="330;335;353;385;434;500" keyTimes="0;0.2;0.4;0.6;0.8;1" dur="6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.24;0.34;0.42;0.4;0" keyTimes="0;0.1;0.4;0.7;0.92;1" dur="6s" repeatCount="indefinite"/></rect>
+      <rect x="-60" width="640" height="2.4"><animate attributeName="y" values="330;335;353;385;434;500" keyTimes="0;0.2;0.4;0.6;0.8;1" dur="6s" repeatCount="indefinite" begin="-1.5s"/><animate attributeName="opacity" values="0;0.24;0.34;0.42;0.4;0" keyTimes="0;0.1;0.4;0.7;0.92;1" dur="6s" repeatCount="indefinite" begin="-1.5s"/></rect>
+      <rect x="-60" width="640" height="2.4"><animate attributeName="y" values="330;335;353;385;434;500" keyTimes="0;0.2;0.4;0.6;0.8;1" dur="6s" repeatCount="indefinite" begin="-3s"/><animate attributeName="opacity" values="0;0.24;0.34;0.42;0.4;0" keyTimes="0;0.1;0.4;0.7;0.92;1" dur="6s" repeatCount="indefinite" begin="-3s"/></rect>
+      <rect x="-60" width="640" height="2.4"><animate attributeName="y" values="330;335;353;385;434;500" keyTimes="0;0.2;0.4;0.6;0.8;1" dur="6s" repeatCount="indefinite" begin="-4.5s"/><animate attributeName="opacity" values="0;0.24;0.34;0.42;0.4;0" keyTimes="0;0.1;0.4;0.7;0.92;1" dur="6s" repeatCount="indefinite" begin="-4.5s"/></rect>
+    </g>
+    <rect class="strip" x="24" y="327" width="464" height="4" fill="url(#edge)" filter="url(#glow)"/>
+    <g fill="#e2f7f5">
+      <circle class="tw" cx="96" cy="96" r="2.2"/><circle class="tw" cx="150" cy="150" r="1.6" style="animation-delay:-2s"/>
+      <circle class="tw" cx="392" cy="110" r="2" style="animation-delay:-1s"/><circle class="tw" cx="430" cy="176" r="1.5" style="animation-delay:-3s"/>
+      <circle class="tw" cx="330" cy="80" r="1.5" style="animation-delay:-4s"/><circle class="tw" cx="196" cy="72" r="1.4" style="animation-delay:-2.5s"/>
+    </g>
+  </g>
+
+  <!-- glow-breath duplicate of the emblem -->
+  <g class="breath" filter="url(#soft)" transform="translate(256,316) scale(1.08) translate(-256,-316)">
+    <path d="M212 262 L212 206 A44 44 0 0 1 300 206 L300 262" fill="none" stroke="#7c3aed" stroke-width="22" stroke-linecap="round"/>
+    <rect x="158" y="256" width="196" height="150" rx="30" fill="#14b8a6"/>
+  </g>
+
+  <!-- emblem (persistent) -->
+  <g filter="url(#glow)" transform="translate(256,316) scale(1.08) translate(-256,-316)">
+    <!-- encrypt ring: seam-safe draw-in then erase -->
+    <circle cx="256" cy="322" r="150" fill="none" stroke="url(#edge)" stroke-width="3" stroke-linecap="round" pathLength="100" stroke-dasharray="100" opacity="0.9">
+      <animate attributeName="stroke-dashoffset" values="100;100;0;0;100;100" keyTimes="0;0.05;0.3;0.66;0.92;1" dur="6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;0.9;0.9;0.9;0;0" keyTimes="0;0.08;0.3;0.66;0.92;1" dur="6s" repeatCount="indefinite"/>
+    </circle>
+    <g class="sealg">
+      <path d="M212 262 L212 206 A44 44 0 0 1 300 206 L300 262" fill="none" stroke="url(#shackle)" stroke-width="22" stroke-linecap="round"/>
+    </g>
+    <rect x="158" y="256" width="196" height="150" rx="30" fill="url(#body)" stroke="url(#edge)" stroke-width="3.5"/>
+    <g transform="translate(256,330) rotate(-18) scale(7.7) translate(-12,-12)">
+      <path d="M2 3 L23 12 L17 12 L2 10 Z" fill="url(#planeTop)"/>
+      <path d="M2 21 L23 12 L17 12 L2 14 Z" fill="url(#planeBot)"/>
+      <path d="M17 12 L2 3 M17 12 L2 21" stroke="#03110f" stroke-width="0.7" opacity="0.5" fill="none"/>
+    </g>
+    <!-- ripple burst at launch origin -->
+    <circle cx="352" cy="300" r="8" fill="none" stroke="#5eead4" stroke-width="3">
+      <animate attributeName="r" values="6;6;46;46" keyTimes="0;0.46;0.62;1" dur="6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;0;0.85;0;0" keyTimes="0;0.46;0.5;0.64;1" dur="6s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- private-send packet comet -->
+  <g opacity="0">
+    <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.44;0.5;0.68;0.74;1" dur="6s" repeatCount="indefinite"/>
+    <circle r="26" fill="url(#packet)" filter="url(#trail)"/>
+    <circle r="8" fill="#ffffff"/>
+    <animateMotion path="M352 300 Q430 250 486 150" keyPoints="0;0;1;1" keyTimes="0;0.45;0.72;1" dur="6s" repeatCount="indefinite"/>
+  </g>
+</svg>

@@ -1,0 +1,31 @@
+{
+  "chainId": 11155111,
+  "network": "sepolia",
+  "contracts": {
+    "DemoUSD": {
+      "address": "0x486c4B8009ACf0BfE26268512F27200e48BD735C",
+      "deployTx": "0x88719814e7385522c9a6c48a7f42df1fc991bfddb57dde59f37b72536aada9c8",
+      "underlyingDecimals": 6
+    },
+    "ConfidentialUSD": {
+      "address": "0x82C281D7403e44d61968c2F49751a56877468991",
+      "deployTx": "0x7530b9115df1467a5cfe011e668974bf9e9007df860b2969c3d03fd0edc739c8",
+      "underlying": "0x486c4B8009ACf0BfE26268512F27200e48BD735C",
+      "name": "Confidential USD",
+      "symbol": "cUSD"
+    },
+    "SendLinkEscrow": {
+      "address": "0xF1Df763b425e20c16c039d80Ef1309c5a4A47f62",
+      "deployTx": "0x3afbbc1ffd4a816a932ff609558258a3e3b94cad52c3bd4c7b09c8b397cee96c",
+      "token": "0x82C281D7403e44d61968c2F49751a56877468991",
+      "model": "operator-pull createLink"
+    }
+  },
+  "deployer": "0xd59278A8dCe73224591B259Fe31f28f3cb64629E",
+  "noxProtocol": "0x24ef36ec5b626d7dcd09a98f3083c2758f0f77bf",
+  "deployedAt": "2026-07-11T17:55:02.087Z",
+  "etherscanVerified": true,
+  "verifyNote": "Source-verify with: npm run verify:contracts (requires ETHERSCAN_API_KEY in .env). Constructor args are wired in scripts/verify-contracts.mjs.",
+  "gatewaySelfServe": true,
+  "etherscanVerifiedAt": "2026-07-13"
+}
