@@ -47,7 +47,7 @@ and no one else. Wallet-less recipients get a **claim link** — private Venmo, 
 **The one flow, with depth:** `wrap → private send → recipient decrypt → (unwrap | claim-link | auditor-grant)`
 — **live on Sepolia, zero mock data.**
 
-## This is real — proven on live Ethereum Sepolia
+## ✅ This is real — proven on live Ethereum Sepolia
 
 Every step below was executed on-chain against the **live Nox Handle Gateway** (no mocks, no local
 stub). Deployed contracts:
@@ -73,7 +73,7 @@ Proof transactions — **one unified `npm run e2e` run** (all steps, single pass
 | Unwrap burn → | [`0xe5645f66…`](https://sepolia.etherscan.io/tx/0xe5645f6662c7af8161da08adae8fae559be8fd92e065cd0bd1ee93c038b932de) |
 | → finalizeUnwrap (proof-gated) | [`0x205905ec…`](https://sepolia.etherscan.io/tx/0x205905ecc24395f307d1f0b73cfd2b51e9bd41294b1ca6749671d208dd8548b9) |
 
-## Quickstart (~5 minutes)
+## 🚀 Quickstart (~5 minutes)
 
 ```bash
 git clone <this-repo> noxsend && cd noxsend
@@ -99,7 +99,7 @@ cd web && npm run dev  # http://localhost:3000  (connect MetaMask/Rabby on Sepol
 > works with only a funded EOA (see `feedback.md` #1). Real Circle Sepolia USDC is the documented
 > primary asset; the demo uses the deployed `DemoUSD` faucet so a dry Circle faucet never blocks you.
 
-## Configuration — environment variables & services
+## ⚙️ Configuration — environment variables & services
 
 Copy the template and fill it in (`.env` is gitignored — never commit real keys; use throwaway keys, Sepolia only):
 
@@ -123,7 +123,7 @@ cp .env.example .env
 
 Deployed contract addresses for this app (cUSD wrapper, SendLinkEscrow, DemoUSD faucet, Nox protocol) are in the **Deployed contracts** table under [_This is real_](#this-is-real--proven-on-live-ethereum-sepolia) above.
 
-## Tests & benchmark
+## 🧪 Tests & benchmark
 
 - **148 tests, all green** — 122 `@noxsend/core` unit tests (amounts · handle decoding · claim-link
   secrets · the full ACL role matrix · config) via `npm test`, plus 26 Hardhat contract tests
@@ -136,7 +136,7 @@ Deployed contract addresses for this app (cUSD wrapper, SendLinkEscrow, DemoUSD 
 - **Latency** (`npm run bench`, live Sepolia): `encryptInput` p50 **522ms** / p95 1287ms · `decrypt`
   p50 **821ms** / p95 1301ms · full send (encrypt+confirm) p50 ~14s (Sepolia block time).
 
-## Engineering & CI
+## 🛠️ Engineering & CI
 
 Beyond the live proof, NoxSend ships a full engineering harness so judges can see
 this is a real product, not a weekend toy.
@@ -174,7 +174,7 @@ make security-scan    # npm audit + license check
 CI runs a **7-stage pipeline** (`.github/workflows/ci.yml`): Quality (frontend +
 contracts, in parallel) → Security → Build → E2E → Performance → Deploy Gate → Semantic Release.
 
-## How it's built
+## 🏗️ How it's built
 
 - **Contracts** (`contracts/`) — thin, protocol unmodified: `ConfidentialUSD` is a 4-line
   `ERC20ToERC7984Wrapper`; `SendLinkEscrow` is an operator-pull claim escrow.
@@ -194,7 +194,7 @@ await nox.decryptBalance();                    // only the owner/viewers can
 
 See [`ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full system diagram and invariants.
 
-## Why only Nox
+## 🔐 Why only Nox
 
 ERC-7984 confidential balances + the `allowThis / allow / addViewer / viewACL` ACL make *selective
 disclosure* a one-call primitive (ZK hides but cannot *governed-reveal*); `fromExternal` proof
@@ -202,7 +202,7 @@ validation keeps inputs out of calldata; the wrapper's proof-gated `unwrap → f
 redemption to a TEE decryption proof. Remove Nox and you need an FHE coprocessor, a KMS, a relayer,
 and a disclosure registry — four systems, none composable with the USDC already in your wallet.
 
-## Honest limitations
+## ⚠️ Honest limitations
 
 - **Amount privacy only** — sender/recipient addresses stay public, and wrap/unwrap amounts are
   visible at the wrapper boundary. Privacy lives *inside* cUSD.
@@ -212,7 +212,7 @@ and a disclosure registry — four systems, none composable with the USDC alread
 - **Claim links take a *time-bound* operator** grant to the escrow (auto-revoked right after funding);
   direct sends take **zero** operator authority.
 
-## Roadmap (designed, not shipped)
+## 🗺️ Roadmap (designed, not shipped)
 
 The shipped scope is the **core flow with depth** + the reusable `@noxsend/core` + CLI + dApp.
 Designed and specced but intentionally *not* in this build (each additive, none blocking the
@@ -221,11 +221,11 @@ receipt (`Nox.le` + `select` + `allowPublicDecryption`) · opt-in time-bound sta
 (`setOperator`) · a The Graph subgraph for the feed. These exercise more of the Nox arithmetic
 surface and are the natural next increments.
 
-## License
+## 📄 License
 
 [MIT](LICENSE) © 2026 Edy Cu
 
-## Disclosure
+## 📢 Disclosure
 
 100% built during the WTF!! Hackathon (iExec Nox). A shared Nox-integration core (`@noxsend/core`) is
 designed to be reused by sibling entries. Nothing reused from the Vibe Coding edition. Throwaway keys
