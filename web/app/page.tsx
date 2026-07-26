@@ -1,10 +1,15 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { useNox, explorerTx } from '@/hooks/useNox';
 import { SealedAmount, LockIcon } from '@/components/SealedAmount';
 import { ConnectButton } from '@/components/ConnectButton';
 import { shortAddr } from '@/lib/contracts';
+
+const GITHUB_URL = 'https://github.com/edycutjong/noxsend';
+const CUSD_ADDRESS = '0x82C281D7403e44d61968c2F49751a56877468991';
+const CUSD_ETHERSCAN = `https://sepolia.etherscan.io/address/${CUSD_ADDRESS}`;
 
 export default function Home() {
   const nox = useNox();
@@ -27,10 +32,16 @@ export default function Home() {
       <Hero />
 
       {!nox.connected ? (
-        <div className="glass flex flex-col items-center gap-4 p-10 text-center">
-          <p className="text-mid">Connect the wallet you already use. Nothing is installed or modified.</p>
-          <ConnectButton />
-        </div>
+        <>
+          <div className="glass flex flex-col items-center gap-4 p-10 text-center">
+            <p className="text-mid">Connect the wallet you already use. Nothing is installed or modified.</p>
+            <ConnectButton />
+            <p className="text-xs text-low">MetaMask or Rabby · Ethereum Sepolia · read-only until you act</p>
+          </div>
+          <FlowStrip />
+          <ProofSection />
+          <Faq />
+        </>
       ) : (
         <>
           {err && (
@@ -64,6 +75,115 @@ function Hero() {
         send with the amount encrypted end-to-end inside Intel TDX via iExec Nox, and reveal it only
         to whom you choose. Live on Ethereum Sepolia — zero mock data.
       </p>
+      <div className="mt-4 flex flex-wrap gap-2">
+        <span className="chip">● Live on Sepolia</span>
+        <span className="chip">148 tests passing</span>
+        <span className="chip">100% contract coverage</span>
+        <span className="chip">ERC-7984 · Intel TDX</span>
+        <span className="chip">Zero mock data</span>
+      </div>
+    </section>
+  );
+}
+
+function FlowStrip() {
+  const steps = [
+    { n: '1', title: 'Wrap USDC → cUSD', body: 'Deposit the USDC you already hold. Get confidential cUSD 1:1 (ERC-7984), redeemable.' },
+    { n: '2', title: 'Private send', body: 'The amount is encrypted before it hits the chain — calldata carries only a 32-byte handle.' },
+    { n: '3', title: 'Reveal to whom you choose', body: 'Recipient decrypts via viewer ACL. Grant an auditor if you say so — no one else can read it.' },
+    { n: '4', title: 'Claim-link · unwrap', body: 'Wallet-less recipients get a claim link. Redeem cUSD back to USDC, proof-gated.' },
+  ];
+  return (
+    <section className="pt-2">
+      <span className="label">The one flow</span>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {steps.map((s) => (
+          <div key={s.n} className="glass flex flex-col gap-3 p-5">
+            <div className="flex items-center gap-3">
+              <span className="step-num">{s.n}</span>
+              <span className="font-display text-sm font-semibold text-hi">{s.title}</span>
+            </div>
+            <p className="text-xs leading-relaxed text-mid">{s.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ProofSection() {
+  const stats = [
+    { num: 'Live', label: 'on Ethereum Sepolia' },
+    { num: '148', label: 'tests passing' },
+    { num: '100%', label: 'contract coverage' },
+    { num: 'TDX', label: 'ERC-7984 · Intel TDX' },
+  ];
+  return (
+    <section className="glass p-6">
+      <span className="label">Live proof — verify every claim yourself</span>
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        {stats.map((s) => (
+          <div key={s.label} className="stat">
+            <span className="stat-num">{s.num}</span>
+            <span className="text-xs text-mid">{s.label}</span>
+          </div>
+        ))}
+      </div>
+      <div className="mt-5 flex flex-wrap gap-2">
+        <Link href="/verify" className="btn btn-primary">Open /verify</Link>
+        <a className="btn btn-ghost" href={GITHUB_URL} target="_blank" rel="noreferrer">View on GitHub ↗</a>
+        <a className="btn btn-ghost" href="/pitch" target="_blank" rel="noreferrer">Pitch deck ↗</a>
+        <a className="btn btn-ghost" href={CUSD_ETHERSCAN} target="_blank" rel="noreferrer">Verified cUSD contract ↗</a>
+      </div>
+      <p className="mt-3 text-xs text-mid">
+        <span className="font-mono">/verify</span> streams live Sepolia events and a live ACL inspector — zero mock.
+        Every on-chain step has a real proof tx in the README.
+      </p>
+    </section>
+  );
+}
+
+function Faq() {
+  const items = [
+    {
+      q: 'Do I need a new wallet or a new chain?',
+      a: 'No. NoxSend uses the MetaMask or Rabby you already have, and the USDC you already hold — neither is modified. It runs on Ethereum Sepolia via the wagmi injected connector.',
+    },
+    {
+      q: 'Is the amount really hidden?',
+      a: 'Yes. The amount is encrypted by the Nox Handle Gateway inside Intel TDX before it ever touches the chain — the transaction calldata carries only a 32-byte handle, not the value. Etherscan sees 32 bytes.',
+    },
+    {
+      q: 'Is this a mock or a demo stub?',
+      a: 'No. It is live on Ethereum Sepolia against the real Nox Handle Gateway, zero mock data. Wrap, private send, auditor grant, claim-link and unwrap each have a real proof transaction — open /verify to watch events stream live.',
+    },
+    {
+      q: 'Who can see my balance and transfers?',
+      a: 'Only you, by default. Decryption is a viewer-gated, EIP-712-signed request to the Nox TEE gateway. The recipient can decrypt via the viewer ACL, and you can grant an auditor with a single addViewer call — no one else can read it.',
+    },
+    {
+      q: "What's the honest limitation?",
+      a: 'Amount-privacy only. Sender and recipient addresses stay public, and wrap/unwrap amounts are visible at the wrapper boundary. Privacy lives inside cUSD. It uses a pinned beta SDK (@iexec-nox/handle) and trusts Intel TDX + iExec gateway liveness.',
+    },
+    {
+      q: 'How does a recipient without a wallet get paid?',
+      a: 'Via a claim link — a self-custodial escrow (SendLinkEscrow) funded by a time-bound operator grant that auto-revokes right after funding. If it is never claimed, you can reclaim it after expiry.',
+    },
+  ];
+  return (
+    <section className="pt-2">
+      <span className="label">How it works · FAQ</span>
+      <div className="grid gap-3">
+        {items.map((it) => (
+          <details key={it.q} className="faq">
+            <summary>
+              <span className="text-sm font-medium">{it.q}</span>
+              <span className="faq-caret text-mid" aria-hidden>▾</span>
+            </summary>
+            <div className="faq-body">{it.a}</div>
+          </details>
+        ))}
+      </div>
     </section>
   );
 }
