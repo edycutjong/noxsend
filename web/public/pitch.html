@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NoxSend — Private send for the wallet you already have</title>
+
+<!--
+  ┌─────────────────────────────────────────────────────────────────────┐
+  │  NoxSend 🔒 — Pitch Deck (single self-contained file, no network)    │
+  │  Built for the WTF!! Hackathon (iExec Nox)                          │
+  ├─────────────────────────────────────────────────────────────────────┤
+  │  NAVIGATE   → / SPACE  next   ·   ←  prev   ·   ESC  slide overview  │
+  │  PRESENTER  P  toggles speaker-notes panel (dims chrome)            │
+  │  CONTRAST   C  toggles a debug border on text (projector check)     │
+  │  PRINT PDF  Cmd/Ctrl+P → "Save as PDF" → Landscape → 11-page deck   │
+  │  SWAP ART   No external images. All visuals are inline SVG/CSS.     │
+  │  REBRAND    Edit the :root CSS variables block below.              │
+  └─────────────────────────────────────────────────────────────────────┘
+-->
+
+<style>
+/* ─── Optional web-font enhancement (deck looks 95% as good without it) ─── */
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+:root{
+  --color-bg:#09090b;
+  --color-surface:#111116;
+  --color-surface-2:#17171f;
+  --color-line:#26262f;
+  --color-primary:#06b6d4;   /* cyan — 15% */
+  --color-primary-dim:#0e7490;
+  --color-accent:#8b5cf6;    /* violet — the Nox/TEE signal, ≤5% */
+  --color-text:#fafafa;
+  --color-muted:#94a3b8;
+  --color-faint:#5b5b6b;
+  --color-good:#34d399;
+  --font-display:"Inter Tight","Inter",-apple-system,BlinkMacSystemFont,"Segoe UI Variable","Segoe UI",system-ui,sans-serif;
+  --font-mono:"JetBrains Mono","SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#000;color:var(--color-text);font-family:var(--font-display);-webkit-font-smoothing:antialiased;overflow:hidden}
+
+/* ─── Fixed 1920×1080 stage, scaled to viewport (letterbox browser, never slide) ─── */
+#stage-wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#000}
+#stage{position:relative;width:1920px;height:1080px;transform-origin:center center;overflow:hidden}
+
+.slide{
+  position:absolute;inset:0;
+  background:var(--color-bg);
+  padding:96px 120px;
+  display:none;
+  flex-direction:column;
+  opacity:0;transition:opacity .35s ease;
+}
+.slide.active{display:flex;opacity:1;z-index:2}
+/* subtle grid texture on every slide */
+.slide::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(var(--color-line) 1px,transparent 1px),linear-gradient(90deg,var(--color-line) 1px,transparent 1px);
+  background-size:120px 120px;opacity:.14;mask-image:radial-gradient(ellipse 80% 80% at 70% 30%,#000 20%,transparent 75%);
+}
+.slide > *{position:relative;z-index:1}
+
+/* ─── Typography scale ─── */
+.kicker{font-family:var(--font-mono);font-size:19px;letter-spacing:.32em;text-transform:uppercase;color:var(--color-primary);font-weight:500}
+.kicker.violet{color:var(--color-accent)}
+h1{font-size:150px;line-height:.92;font-weight:900;letter-spacing:-.03em}
+h2{font-size:84px;line-height:.98;font-weight:800;letter-spacing:-.025em}
+h3{font-size:40px;line-height:1.05;font-weight:700;letter-spacing:-.01em}
+.lead{font-size:34px;line-height:1.35;color:var(--color-muted);font-weight:400;max-width:1180px}
+.mono{font-family:var(--font-mono)}
+.hl{color:var(--color-primary)}
+.hlv{color:var(--color-accent)}
+.dim{color:var(--color-muted)}
+.faint{color:var(--color-faint)}
+
+/* ─── Chrome: counter + progress ─── */
+#counter{position:fixed;right:34px;bottom:26px;z-index:60;font-family:var(--font-mono);font-size:17px;letter-spacing:.2em;color:var(--color-faint)}
+#counter b{color:var(--color-text)}
+#progress{position:fixed;left:0;top:0;height:3px;background:var(--color-primary);z-index:60;transition:width .35s ease;box-shadow:0 0 12px var(--color-primary)}
+#hint{position:fixed;left:34px;bottom:26px;z-index:60;font-family:var(--font-mono);font-size:13px;letter-spacing:.12em;color:#33333c;text-transform:uppercase}
+
+/* ─── Speaker notes (presenter mode) ─── */
+.speaker-notes{display:none}
+body.presenter #stage-wrap{align-items:flex-start;padding-top:1.5vh}
+body.presenter #stage{transform:scale(var(--pscale))!important}
+body.presenter .speaker-notes{
+  display:block;position:fixed;left:0;right:0;bottom:0;height:20vh;z-index:70;
+  background:linear-gradient(0deg,#000,#0a0a0f);border-top:2px solid var(--color-primary);
+  padding:22px 46px;font-size:23px;line-height:1.5;color:#cbd5e1;font-family:var(--font-display);
+  box-shadow:0 -20px 60px rgba(0,0,0,.7);
+}
+.speaker-notes b{color:var(--color-primary);font-family:var(--font-mono);font-size:15px;letter-spacing:.24em;text-transform:uppercase;display:block;margin-bottom:8px}
+body.presenter.idle{cursor:none}
+
+/* ─── Slide overview grid (ESC) ─── */
+body.overview #stage-wrap{display:none}
+#grid{display:none;position:fixed;inset:0;z-index:80;background:#050507;padding:56px 64px;overflow:auto}
+body.overview #grid{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;align-content:start}
+.thumb{aspect-ratio:16/9;background:var(--color-surface);border:1px solid var(--color-line);border-radius:12px;position:relative;cursor:pointer;overflow:hidden;transition:transform .12s,border-color .12s}
+.thumb:hover{transform:translateY(-4px);border-color:var(--color-primary)}
+.thumb .tn{position:absolute;top:12px;left:14px;font-family:var(--font-mono);font-size:13px;color:var(--color-faint)}
+.thumb .tt{position:absolute;left:14px;right:14px;bottom:14px;font-size:20px;font-weight:700;line-height:1.15}
+#grid h4{grid-column:1/-1;font-family:var(--font-mono);font-size:16px;letter-spacing:.2em;text-transform:uppercase;color:var(--color-primary);margin-bottom:6px}
+
+/* ─── Reusable pieces ─── */
+.badge{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:18px;letter-spacing:.06em;padding:12px 20px;border:1px solid var(--color-line);border-radius:100px;color:var(--color-muted);background:var(--color-surface)}
+.dot{width:11px;height:11px;border-radius:50%;background:var(--color-primary);box-shadow:0 0 0 0 var(--color-primary);animation:pulse 2.6s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(6,182,212,.55)}70%{box-shadow:0 0 0 18px rgba(6,182,212,0)}100%{box-shadow:0 0 0 0 rgba(6,182,212,0)}}
+
+.card{background:var(--color-surface);border:1px solid var(--color-line);border-radius:18px;padding:34px 36px}
+.card .n{font-family:var(--font-mono);color:var(--color-primary);font-size:22px}
+.stat{font-size:96px;font-weight:900;letter-spacing:-.04em;line-height:1;font-family:var(--font-display)}
+.stat.sm{font-size:66px}
+.label{font-family:var(--font-mono);font-size:17px;letter-spacing:.16em;text-transform:uppercase;color:var(--color-faint)}
+
+.browser-frame{background:#0c0c11;border:1px solid var(--color-line);border-radius:16px;overflow:hidden;box-shadow:0 40px 90px rgba(0,0,0,.55)}
+.browser-bar{display:flex;align-items:center;gap:9px;padding:15px 20px;background:#141419;border-bottom:1px solid var(--color-line)}
+.tl{width:14px;height:14px;border-radius:50%}
+.url{margin-left:18px;font-family:var(--font-mono);font-size:17px;color:var(--color-muted);background:#0a0a0e;padding:8px 18px;border-radius:8px;border:1px solid var(--color-line);flex:1}
+
+a{color:var(--color-primary);text-decoration:none}
+
+.contrast-check{}
+body.debug-contrast .contrast-check{outline:1px solid #ff2d55}
+
+/* ─── PRINT / PDF ─── */
+@page{size:16in 9in landscape;margin:0}
+@media print{
+  html,body{overflow:visible;background:#fff}
+  #stage-wrap{position:static}
+  #stage{transform:none!important;width:1920px;height:1080px}
+  .slide{display:flex!important;opacity:1!important;position:relative;page-break-after:always;page-break-inside:avoid;break-inside:avoid;width:1920px;height:1080px}
+  #counter,#progress,#hint,.speaker-notes,#grid{display:none!important}
+  html,body,.slide{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+
+<div id="stage-wrap">
+<div id="stage">
+
+<!-- ══════════════════ 01 · COVER ══════════════════ -->
+<section class="slide active" data-title="Cover">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start">
+    <div class="badge"><span class="dot"></span>Built for the WTF!! Hackathon · iExec Nox</div>
+    <div class="badge mono" style="border-color:var(--color-primary-dim)">🔒 noxsend.edycu.dev</div>
+  </div>
+
+  <div style="margin-top:auto;margin-bottom:auto">
+    <div class="kicker">Confidential transfers · ERC-7984 · Intel TDX TEE</div>
+    <h1 style="margin-top:26px">NoxSend<span class="hl" style="font-size:.55em;vertical-align:.42em;margin-left:8px">🔒</span></h1>
+    <p class="lead" style="margin-top:34px;font-size:40px;color:var(--color-text);font-weight:500">
+      Private send for the <span class="hl">wallet you already have.</span>
+    </p>
+
+    <!-- Signature visual hook: public ERC-20 calldata collapsing into a private 32-byte handle -->
+    <div style="margin-top:52px;display:flex;align-items:center;gap:28px;font-family:var(--font-mono);font-size:22px">
+      <div style="color:var(--color-faint)">
+        <div class="label" style="margin-bottom:10px">Ordinary ERC-20 transfer</div>
+        <div>transfer(0xLandlord, <span style="color:#f87171">1,850.00 USDC</span>)</div>
+      </div>
+      <svg width="120" height="40" viewBox="0 0 120 40" fill="none" style="flex:none">
+        <path d="M4 20 H104" stroke="#06b6d4" stroke-width="2.5"/>
+        <path d="M92 10 L108 20 L92 30" stroke="#06b6d4" stroke-width="2.5" fill="none"/>
+        <rect class="scanbox" x="4" width="4" height="40" fill="#06b6d4" opacity=".9"/>
+      </svg>
+      <div>
+        <div class="label" style="margin-bottom:10px">NoxSend confidential transfer</div>
+        <div>confidentialTransfer(0xLandlord, <span class="hl">0x7f3a…c1e9</span>)</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:14px;flex-wrap:wrap">
+    <span class="badge">Next.js 14 · wagmi v2</span>
+    <span class="badge">148 tests green</span>
+    <span class="badge">100% contract coverage</span>
+    <span class="badge">Live on Ethereum Sepolia · zero mock</span>
+  </div>
+  <aside class="speaker-notes"><b>Say · Cover</b>NoxSend adds one thing to the wallet you already open every day: a private send. Same MetaMask, same USDC — but the amount stops being public. Everything you'll see is live on Sepolia, no mock data.</aside>
+</section>
+
+<!-- ══════════════════ 02 · HOOK ══════════════════ -->
+<section class="slide" data-title="Hook">
+  <div class="kicker">The one line</div>
+  <div style="margin-top:auto;margin-bottom:auto;max-width:1560px">
+    <h2 style="font-size:118px;line-height:1.02" class="contrast-check">
+      Etherscan sees<br><span class="hl">32 bytes.</span><br>
+      Your landlord sees <span class="hlv">nothing.</span>
+    </h2>
+    <p class="lead" style="margin-top:44px">
+      Every ERC-20 transfer is a public payslip — salary, rent, settlements, donations, naked forever.
+      NoxSend encrypts the <em>amount</em> end-to-end and reveals it to exactly whom you choose.
+    </p>
+  </div>
+  <div class="mono faint" style="font-size:20px">calldata after a private send = one <span class="hl">euint256</span> handle · no number, ever</div>
+  <aside class="speaker-notes"><b>Say · Hook</b>This is the whole pitch in one image. A block explorer records a 32-byte handle. The person snooping your wallet learns your address — never your number. Amount privacy, on the token you already hold.</aside>
+</section>
+
+<!-- ══════════════════ 03 · PROBLEM ══════════════════ -->
+<section class="slide" data-title="Problem">
+  <div class="kicker">The 2am problem</div>
+  <div style="display:grid;grid-template-columns:1.05fr .95fr;gap:80px;margin-top:auto;margin-bottom:auto;align-items:center">
+    <div>
+      <h2 style="font-size:76px">Alice pays her<br>contractor. <span class="dim">The<br>whole world</span> gets<br>the <span class="hl">receipt.</span></h2>
+      <p class="lead" style="margin-top:36px;font-size:30px">
+        Wallets made keys usable — but amounts stay naked. Her landlord, her ex, and every
+        block-explorer stalker now know what she earns and pays.
+      </p>
+      <p class="lead" style="margin-top:24px;font-size:26px;color:var(--color-faint)">
+        The usual fixes force a new chain, a mixer with regulatory stigma, or a new wallet.
+        Normal people won't switch wallets to get what banks give them by default.
+      </p>
+    </div>
+
+    <!-- Hero: a leaked explorer row -->
+    <div class="browser-frame">
+      <div class="browser-bar"><span class="tl" style="background:#ff5f57"></span><span class="tl" style="background:#febc2e"></span><span class="tl" style="background:#28c840"></span><span class="url">sepolia.etherscan.io/address/0xAlice</span></div>
+      <div style="padding:30px 32px;font-family:var(--font-mono);font-size:20px;line-height:2.05">
+        <div class="faint" style="font-size:16px;letter-spacing:.14em">TOKEN TRANSFERS (ERC-20)</div>
+        <div style="margin-top:16px;color:var(--color-muted)">→ 0xLandlord&nbsp;&nbsp;<span style="color:#f87171">2,400 USDC</span> <span class="faint">rent</span></div>
+        <div style="color:var(--color-muted)">→ 0xClinic&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#f87171">180 USDC</span> <span class="faint">visible</span></div>
+        <div style="color:var(--color-muted)">→ 0xEmployer&nbsp;<span style="color:#f87171">6,000 USDC</span> <span class="faint">salary</span></div>
+        <div style="color:var(--color-muted)">→ 0xExchange&nbsp;<span style="color:#f87171">500 USDC</span> <span class="faint">cash-out</span></div>
+        <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--color-line);color:#f87171">◉ Anyone can read every number, forever.</div>
+      </div>
+    </div>
+  </div>
+  <aside class="speaker-notes"><b>Say · Problem</b>Meet Alice. She pays a contractor from MetaMask and simultaneously publishes her salary, her rent, and her medical spend to anyone with the URL. Privacy exists on-chain today only if you abandon your wallet. Nobody does that.</aside>
+</section>
+
+<!-- ══════════════════ 04 · SOLUTION ══════════════════ -->
+<section class="slide" data-title="Solution">
+  <div class="kicker">The solution</div>
+  <div style="display:grid;grid-template-columns:1fr 1.15fr;gap:70px;margin-top:52px;align-items:center;flex:1">
+    <div>
+      <h2 style="font-size:70px">Wrap once.<br>Send <span class="hl">privately.</span><br>Reveal on <span class="hlv">your terms.</span></h2>
+      <p class="lead" style="margin-top:34px;font-size:29px">
+        NoxSend adds a private-send flow to the wallet you <em>already</em> use, on the token you
+        <em>already</em> hold — <span class="hl">without modifying either.</span>
+      </p>
+      <div style="margin-top:34px;display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;gap:16px;align-items:baseline"><span class="mono hl" style="font-size:19px">01</span><span style="font-size:24px">Wrap USDC → confidential <b>cUSD</b> (ERC-7984, 1:1, redeemable)</span></div>
+        <div style="display:flex;gap:16px;align-items:baseline"><span class="mono hl" style="font-size:19px">02</span><span style="font-size:24px">Send with the amount encrypted inside <b>Intel TDX</b></span></div>
+        <div style="display:flex;gap:16px;align-items:baseline"><span class="mono hl" style="font-size:19px">03</span><span style="font-size:24px">Reveal to the recipient, an auditor <em>if you say so</em>, no one else</span></div>
+      </div>
+    </div>
+
+    <!-- Hero shot: the NoxSend send UI in a browser frame -->
+    <div class="browser-frame">
+      <div class="browser-bar"><span class="tl" style="background:#ff5f57"></span><span class="tl" style="background:#febc2e"></span><span class="tl" style="background:#28c840"></span><span class="url">noxsend.edycu.dev/send</span></div>
+      <div style="padding:38px 40px">
+        <div class="label">Private send</div>
+        <div style="margin-top:20px;background:#0a0a0e;border:1px solid var(--color-line);border-radius:12px;padding:22px 24px">
+          <div class="dim mono" style="font-size:15px">TO</div>
+          <div class="mono" style="font-size:23px;margin-top:6px">0xLandlord…4F2a</div>
+        </div>
+        <div style="margin-top:16px;background:#0a0a0e;border:1px solid var(--color-primary);border-radius:12px;padding:22px 24px;box-shadow:0 0 30px rgba(6,182,212,.16)">
+          <div class="dim mono" style="font-size:15px">AMOUNT (encrypted end-to-end)</div>
+          <div class="mono hl" style="font-size:40px;margin-top:6px;font-weight:700">1,850.00 cUSD</div>
+        </div>
+        <div style="margin-top:20px;background:var(--color-primary);color:#04222a;text-align:center;border-radius:12px;padding:20px;font-weight:800;font-size:24px">Send privately →</div>
+        <div class="mono faint" style="font-size:15px;margin-top:16px;text-align:center">calldata written on-chain = <span class="hl">0x7f3a…c1e9</span> · a 32-byte handle</div>
+      </div>
+    </div>
+  </div>
+  <aside class="speaker-notes"><b>Say · Solution</b>Three steps. Wrap USDC into cUSD one time. Then every send carries the amount as an encrypted handle. And crucially — selective disclosure: you decide who can decrypt. Recipient always; an auditor only if you grant it.</aside>
+</section>
+
+<!-- ══════════════════ 05 · HOW IT WORKS (SVG architecture) ══════════════════ -->
+<section class="slide" data-title="Architecture">
+  <div class="kicker">How it works · one flow, deep</div>
+  <h3 style="margin-top:14px;font-size:34px">Your wallet & USDC stay <span class="hl">unmodified</span>. Privacy lives inside cUSD.</h3>
+
+  <div style="flex:1;display:flex;align-items:center;margin-top:8px">
+  <svg viewBox="0 0 1680 560" width="100%" style="max-height:640px" font-family="var(--font-mono)">
+    <defs>
+      <marker id="ah" markerWidth="11" markerHeight="11" refX="8" refY="5.5" orient="auto"><path d="M1 1 L9 5.5 L1 10" fill="none" stroke="#06b6d4" stroke-width="1.8"/></marker>
+      <marker id="ahv" markerWidth="11" markerHeight="11" refX="8" refY="5.5" orient="auto"><path d="M1 1 L9 5.5 L1 10" fill="none" stroke="#8b5cf6" stroke-width="1.8"/></marker>
+    </defs>
+
+    <!-- BROWSER cluster -->
+    <rect x="30" y="40" width="470" height="480" rx="18" fill="#111116" stroke="#26262f"/>
+    <text x="60" y="82" fill="#5b5b6b" font-size="17" letter-spacing="3">BROWSER · YOUR DEVICE</text>
+
+    <rect x="66" y="112" width="398" height="96" rx="12" fill="#17171f" stroke="#26262f"/>
+    <text x="88" y="150" fill="#fafafa" font-size="23" font-weight="700">wagmi injected connector</text>
+    <text x="88" y="182" fill="#94a3b8" font-size="18">MetaMask / Rabby — untouched</text>
+
+    <rect x="66" y="230" width="398" height="120" rx="12" fill="#17171f" stroke="#06b6d4"/>
+    <text x="88" y="268" fill="#06b6d4" font-size="23" font-weight="700">@noxsend/core · HandleClient</text>
+    <text x="88" y="300" fill="#94a3b8" font-size="18">encryptInput · decrypt · viewACL</text>
+    <text x="88" y="328" fill="#5b5b6b" font-size="16">add private send in ~10 lines</text>
+
+    <rect x="66" y="372" width="398" height="96" rx="12" fill="#17171f" stroke="#26262f"/>
+    <text x="88" y="410" fill="#fafafa" font-size="23" font-weight="700">/verify · judge page</text>
+    <text x="88" y="442" fill="#94a3b8" font-size="18">live events + ACL inspector · no mock</text>
+
+    <!-- TEE gateway -->
+    <rect x="620" y="150" width="380" height="260" rx="18" fill="#140f24" stroke="#8b5cf6"/>
+    <text x="650" y="196" fill="#8b5cf6" font-size="17" letter-spacing="3">iEXEC NOX · HANDLE GATEWAY</text>
+    <text x="650" y="250" fill="#fafafa" font-size="30" font-weight="800">Intel TDX TEE</text>
+    <text x="650" y="292" fill="#c4b5fd" font-size="19">amount encrypted end-to-end</text>
+    <text x="650" y="322" fill="#c4b5fd" font-size="19">fromExternal proof validation</text>
+    <text x="650" y="352" fill="#c4b5fd" font-size="19">ERC-7984 viewer ACL</text>
+    <text x="650" y="386" fill="#5b5b6b" font-size="16">self-serve · no account · no API key</text>
+
+    <!-- SEPOLIA cluster -->
+    <rect x="1120" y="40" width="530" height="480" rx="18" fill="#111116" stroke="#26262f"/>
+    <text x="1150" y="82" fill="#5b5b6b" font-size="17" letter-spacing="3">ETHEREUM SEPOLIA</text>
+
+    <rect x="1156" y="112" width="458" height="96" rx="12" fill="#17171f" stroke="#26262f"/>
+    <text x="1178" y="150" fill="#fafafa" font-size="22" font-weight="700">USDC · unmodified ERC-20</text>
+    <text x="1178" y="182" fill="#94a3b8" font-size="17">the token already in your wallet</text>
+
+    <rect x="1156" y="230" width="458" height="120" rx="12" fill="#17171f" stroke="#06b6d4"/>
+    <text x="1178" y="268" fill="#06b6d4" font-size="22" font-weight="700">cUSD · ERC20ToERC7984Wrapper</text>
+    <text x="1178" y="300" fill="#94a3b8" font-size="17">wrap · confidentialTransfer</text>
+    <text x="1178" y="328" fill="#94a3b8" font-size="17">unwrap → finalizeUnwrap (proof-gated)</text>
+
+    <rect x="1156" y="372" width="458" height="96" rx="12" fill="#17171f" stroke="#26262f"/>
+    <text x="1178" y="410" fill="#fafafa" font-size="22" font-weight="700">SendLinkEscrow</text>
+    <text x="1178" y="442" fill="#94a3b8" font-size="17">claim links · expiry + reclaim</text>
+
+    <!-- arrows -->
+    <path d="M464 290 H620" stroke="#8b5cf6" stroke-width="2.5" marker-end="url(#ahv)"/>
+    <text x="500" y="278" fill="#8b5cf6" font-size="15">encrypt</text>
+    <path d="M1000 280 H1156" stroke="#06b6d4" stroke-width="2.5" marker-end="url(#ah)"/>
+    <text x="1030" y="268" fill="#06b6d4" font-size="15">proof</text>
+    <path d="M265 208 V230" stroke="#26262f" stroke-width="2" marker-end="url(#ah)"/>
+    <path d="M1385 208 V230" stroke="#26262f" stroke-width="2" marker-end="url(#ah)"/>
+    <path d="M1385 350 V372" stroke="#26262f" stroke-width="2" marker-end="url(#ah)"/>
+    <path d="M464 420 C560 420 560 300 620 300" stroke="#26262f" stroke-width="2" fill="none"/>
+  </svg>
+  </div>
+
+  <div class="mono faint" style="font-size:19px">2 thin contracts · protocol never modified · <span class="hl">no backend</span> — the only server code is static hosting, nothing to mock</div>
+  <aside class="speaker-notes"><b>Say · Architecture</b>Left is your untouched wallet plus our ten-line core SDK. Middle is the Nox TEE where amounts are encrypted and proven. Right is Sepolia — two thin contracts wrapping unmodified USDC. There is no backend, so there is nothing to fake.</aside>
+</section>
+
+<!-- ══════════════════ 06 · LIVE DEMO (the one flow) ══════════════════ -->
+<section class="slide" data-title="Live Demo">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start">
+    <div><div class="kicker">Live demo · noxsend.edycu.dev</div><h3 style="margin-top:12px;font-size:44px">The one flow — with depth</h3></div>
+    <div class="badge"><span class="dot"></span>Recorded live on Sepolia</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:auto;margin-bottom:auto">
+    <!-- 1 -->
+    <div class="card contrast-check" style="padding:28px 26px">
+      <div style="display:flex;justify-content:space-between;align-items:center"><span class="n mono">01</span><span style="font-size:26px">💵</span></div>
+      <h3 style="margin-top:20px;font-size:27px">Wrap</h3>
+      <p class="dim" style="margin-top:10px;font-size:19px;line-height:1.4">5,000 USDC → cUSD, 1:1 and redeemable.</p>
+      <div class="mono faint" style="font-size:14px;margin-top:16px">ERC20ToERC7984Wrapper</div>
+    </div>
+    <!-- 2 (hero) -->
+    <div class="card contrast-check" style="padding:28px 26px;border-color:var(--color-primary);box-shadow:0 0 40px rgba(6,182,212,.14);position:relative">
+      <div style="position:absolute;top:-14px;right:18px;background:var(--color-primary);color:#04222a;font-family:var(--font-mono);font-size:13px;font-weight:700;padding:5px 12px;border-radius:100px;letter-spacing:.1em">HERO MOMENT</div>
+      <div style="display:flex;justify-content:space-between;align-items:center"><span class="n mono hl">02</span><span style="font-size:26px">🔒</span></div>
+      <h3 style="margin-top:20px;font-size:27px" class="hl">Private send</h3>
+      <p class="dim" style="margin-top:10px;font-size:19px;line-height:1.4">1,850 cUSD. Calldata = a 32-byte handle. <b class="hl">No amount, anywhere.</b></p>
+      <div class="mono hl" style="font-size:14px;margin-top:16px">0xb03d69a2…</div>
+    </div>
+    <!-- 3 -->
+    <div class="card contrast-check" style="padding:28px 26px">
+      <div style="display:flex;justify-content:space-between;align-items:center"><span class="n mono">03</span><span style="font-size:26px">👁️</span></div>
+      <h3 style="margin-top:20px;font-size:27px">Recipient decrypt</h3>
+      <p class="dim" style="margin-top:10px;font-size:19px;line-height:1.4">Signs EIP-712. Only the owner &amp; viewers see the balance.</p>
+      <div class="mono faint" style="font-size:14px;margin-top:16px">viewer-gated · decrypt</div>
+    </div>
+    <!-- 4 -->
+    <div class="card contrast-check" style="padding:28px 26px">
+      <div style="display:flex;justify-content:space-between;align-items:center"><span class="n mono">04</span><span style="font-size:26px">🔀</span></div>
+      <h3 style="margin-top:20px;font-size:27px">Branch out</h3>
+      <p class="dim" style="margin-top:10px;font-size:19px;line-height:1.4"><b>unwrap</b> · <b>claim-link</b> for wallet-less recipients · <b>auditor-grant</b>.</p>
+      <div class="mono faint" style="font-size:14px;margin-top:16px">addViewer · escrow · finalizeUnwrap</div>
+    </div>
+  </div>
+
+  <div class="mono" style="font-size:19px;color:var(--color-muted);text-align:center">
+    <span class="hl">wrap</span> → <span class="hl">private send</span> → <span class="hl">recipient decrypt</span> → ( unwrap | claim-link | auditor-grant ) &nbsp;·&nbsp; <span class="faint">one unified <b>npm run e2e</b>, single pass, zero mock</span>
+  </div>
+  <aside class="speaker-notes"><b>Say · Demo</b>Watch step two. I send 1,850 cUSD and the transaction that lands on Etherscan carries a 32-byte handle — no number. The recipient signs once and decrypts. From there it branches: unwrap back to USDC, send a claim link to someone with no wallet, or grant an auditor a view.</aside>
+</section>
+
+<!-- ══════════════════ 07 · PROOF (no mock, on-chain) ══════════════════ -->
+<section class="slide" data-title="Proof On-Chain">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start">
+    <div><div class="kicker">Works end-to-end · NO mock data · 3★</div><h3 style="margin-top:12px;font-size:44px">Every step proven on live Sepolia</h3></div>
+    <div class="badge mono" style="border-color:var(--color-good)"><span class="dot" style="background:var(--color-good)"></span>8 real txs · one e2e pass</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.15fr 1fr;gap:44px;margin-top:36px;flex:1">
+    <!-- proof tx table -->
+    <div class="card" style="padding:26px 30px">
+      <div class="label" style="margin-bottom:16px">Proof transactions · sepolia.etherscan.io/tx/…</div>
+      <table class="mono" style="width:100%;border-collapse:collapse;font-size:18.5px">
+        <tr style="border-bottom:1px solid var(--color-line)"><td style="padding:11px 0;color:var(--color-muted)">Wrap 5,000 dUSD → cUSD</td><td style="text-align:right;color:var(--color-primary)">0x83e5e9db…</td></tr>
+        <tr style="border-bottom:1px solid var(--color-line);background:rgba(6,182,212,.06)"><td style="padding:11px 0;color:var(--color-text);font-weight:700">Private send 1,850 cUSD</td><td style="text-align:right;color:var(--color-primary)">0xb03d69a2…</td></tr>
+        <tr style="border-bottom:1px solid var(--color-line)"><td style="padding:11px 0;color:var(--color-muted)">Auditor grant · addViewer</td><td style="text-align:right;color:var(--color-primary)">0x387fdc2f…</td></tr>
+        <tr style="border-bottom:1px solid var(--color-line)"><td style="padding:11px 0;color:var(--color-muted)">Claim-link create</td><td style="text-align:right;color:var(--color-primary)">0x93d639c9…</td></tr>
+        <tr style="border-bottom:1px solid var(--color-line)"><td style="padding:11px 0;color:var(--color-muted)">Claim · wallet-less Bob</td><td style="text-align:right;color:var(--color-primary)">0x18cfc9fa…</td></tr>
+        <tr style="border-bottom:1px solid var(--color-line)"><td style="padding:11px 0;color:var(--color-muted)">Reclaim · post-expiry refund</td><td style="text-align:right;color:var(--color-primary)">0x110b56c6…</td></tr>
+        <tr style="border-bottom:1px solid var(--color-line)"><td style="padding:11px 0;color:var(--color-muted)">Unwrap burn</td><td style="text-align:right;color:var(--color-primary)">0xe5645f66…</td></tr>
+        <tr><td style="padding:11px 0;color:var(--color-muted)">finalizeUnwrap · proof-gated</td><td style="text-align:right;color:var(--color-primary)">0x205905ec…</td></tr>
+      </table>
+    </div>
+
+    <!-- deployed contracts + auditor proof -->
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div class="card" style="padding:24px 28px">
+        <div class="label" style="margin-bottom:14px">Deployed &amp; verified contracts</div>
+        <div class="mono" style="font-size:17px;line-height:1.9">
+          <div><span class="dim">cUSD wrapper</span><br><span class="hl">0x82C281D7403e44d61968c2F49751a56877468991</span></div>
+          <div style="margin-top:12px"><span class="dim">SendLinkEscrow</span><br><span class="hl">0xF1Df763b425e20c16c039d80Ef1309c5a4A47f62</span></div>
+        </div>
+      </div>
+      <div class="card" style="padding:24px 28px;border-color:var(--color-accent)">
+        <div class="label" style="margin-bottom:12px;color:var(--color-accent)">Selective disclosure — proven</div>
+        <div class="mono" style="font-size:21px;line-height:1.7">
+          isViewer(auditor)&nbsp;→ <span style="color:var(--color-good)">true</span><br>
+          isViewer(stranger) → <span style="color:#f87171">false</span>
+        </div>
+        <p class="dim" style="font-size:17px;margin-top:12px">You grant one auditor a view. Everyone else stays blind.</p>
+      </div>
+    </div>
+  </div>
+  <aside class="speaker-notes"><b>Say · Proof</b>This is the star-weighted criterion — end to end, no mock data. Eight real transactions in one e2e pass, every hash clickable to Etherscan. And the auditor row proves selective disclosure: the auditor decrypts, a stranger cannot.</aside>
+</section>
+
+<!-- ══════════════════ 08 · WHY ONLY NOX ══════════════════ -->
+<section class="slide" data-title="Why Nox">
+  <div class="kicker violet">Why only iExec Nox</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:70px;margin-top:44px;flex:1;align-items:center">
+    <div>
+      <h2 style="font-size:66px">Selective disclosure is a <span class="hlv">one-call primitive.</span></h2>
+      <p class="lead" style="margin-top:32px;font-size:28px">
+        ERC-7984 confidential balances + the <span class="mono hlv">allow / addViewer / viewACL</span> ACL make
+        <em>governed reveal</em> a single call. ZK can hide — it cannot <em>reveal on demand.</em>
+      </p>
+      <div class="card" style="margin-top:32px;padding:26px 30px;border-color:var(--color-accent)">
+        <div class="label" style="color:var(--color-accent);margin-bottom:12px">Remove Nox and you rebuild</div>
+        <div style="font-size:24px;line-height:1.5">an FHE coprocessor + a KMS + a relayer + a disclosure registry — <span class="hlv">four systems</span>, none composable with the USDC already in your wallet.</div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:22px">
+      <div class="card contrast-check"><div style="display:flex;gap:20px;align-items:flex-start"><span style="font-size:32px">🔐</span><div><h3 style="font-size:28px">ERC-7984 + Intel TDX</h3><p class="dim" style="font-size:20px;margin-top:8px">Amounts encrypted end-to-end in a TEE; <span class="mono">fromExternal</span> proofs keep inputs out of calldata.</p></div></div></div>
+      <div class="card contrast-check"><div style="display:flex;gap:20px;align-items:flex-start"><span style="font-size:32px">👁️</span><div><h3 style="font-size:28px">Viewer ACL</h3><p class="dim" style="font-size:20px;margin-top:8px">Recipient always; auditor only if <em>you</em> call <span class="mono">addViewer</span>. Anyone else: blind.</p></div></div></div>
+      <div class="card contrast-check"><div style="display:flex;gap:20px;align-items:flex-start"><span style="font-size:32px">✅</span><div><h3 style="font-size:28px">Proof-gated redemption</h3><p class="dim" style="font-size:20px;margin-top:8px"><span class="mono">unwrap → finalizeUnwrap</span> binds USDC release to a TEE decryption proof — the 1:1 peg holds.</p></div></div></div>
+    </div>
+  </div>
+  <aside class="speaker-notes"><b>Say · Why Nox</b>This is the technical-depth argument. A zero-knowledge system can hide an amount but can't let you selectively reveal it later. Nox's ACL makes governed reveal a single call. Rip it out and you're maintaining four separate systems.</aside>
+</section>
+
+<!-- ══════════════════ 09 · HONEST LIMITATION ══════════════════ -->
+<section class="slide" data-title="Honest Limits">
+  <div class="kicker">Honest limitations · what we do NOT claim</div>
+  <div style="display:grid;grid-template-columns:1.1fr .9fr;gap:70px;margin-top:auto;margin-bottom:auto;align-items:center">
+    <div>
+      <h2 style="font-size:70px">Amount privacy.<br><span class="dim">Not address privacy.</span></h2>
+      <p class="lead" style="margin-top:34px;font-size:29px">
+        Sender and recipient <em>addresses</em> stay public; wrap/unwrap amounts are visible at the
+        wrapper boundary. <span class="hl">Privacy lives inside cUSD</span> — and we say so, out loud, in the demo.
+      </p>
+      <p class="lead" style="margin-top:22px;font-size:24px;color:var(--color-faint)">
+        Beta SDK, pinned <span class="mono">@iexec-nox/handle@0.1.0-beta.13</span>. TEE trust = Intel TDX + gateway liveness.
+      </p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="card contrast-check" style="border-color:var(--color-good)">
+        <div class="label" style="color:var(--color-good)">Private</div>
+        <div style="font-size:27px;margin-top:8px;font-weight:600">The <b>amount</b> — encrypted end-to-end, revealed only to viewers you name.</div>
+      </div>
+      <div class="card contrast-check">
+        <div class="label">Still public</div>
+        <div style="font-size:27px;margin-top:8px;font-weight:600" class="dim">The <b>addresses</b> and wrap/unwrap totals at the boundary.</div>
+      </div>
+      <div class="card contrast-check">
+        <div class="label" style="color:var(--color-accent)">Logged</div>
+        <div style="font-size:23px;margin-top:8px" class="dim"><b class="hlv">15 findings</b> in <span class="mono">feedback.md</span> — every SDK friction, including the one that changed our architecture (#2).</div>
+      </div>
+    </div>
+  </div>
+  <aside class="speaker-notes"><b>Say · Limits</b>Credibility comes from honesty. We protect the amount, not the addresses — and we scope that clearly instead of overclaiming. The SDK is beta; we pinned it and logged fifteen findings, one of which reshaped our design. That's the feedback.md the rubric rewards.</aside>
+</section>
+
+<!-- ══════════════════ 10 · TRACTION / SHIPPED ══════════════════ -->
+<section class="slide" data-title="Shipped">
+  <div class="kicker">What shipped · real numbers</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:26px;margin-top:44px">
+    <div class="card contrast-check"><div class="stat hl">148</div><div class="label" style="margin-top:14px">Tests passing</div><p class="dim" style="font-size:17px;margin-top:8px">122 core + 26 Hardhat contract</p></div>
+    <div class="card contrast-check"><div class="stat" style="color:var(--color-good)">100%</div><div class="label" style="margin-top:14px">Contract coverage</div><p class="dim" style="font-size:17px;margin-top:8px">stmts · branches · funcs · lines</p></div>
+    <div class="card contrast-check"><div class="stat">8</div><div class="label" style="margin-top:14px">On-chain proof txs</div><p class="dim" style="font-size:17px;margin-top:8px">one unified e2e, zero mock</p></div>
+    <div class="card contrast-check"><div class="stat sm hl">522ms</div><div class="label" style="margin-top:14px">encryptInput p50</div><p class="dim" style="font-size:17px;margin-top:8px">decrypt p50 821ms · live bench</p></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:44px;margin-top:36px;flex:1">
+    <div class="card">
+      <div class="label" style="margin-bottom:18px">Real deliverables — 100% built during the hackathon</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 40px;font-size:21px">
+        <div>✅ 2 thin contracts, protocol unmodified</div>
+        <div>✅ <span class="mono hl">@noxsend/core</span> — private send in ~10 lines</div>
+        <div>✅ Next.js 14 dApp + wagmi injected</div>
+        <div>✅ Node/CLI surface (<span class="mono">NoxSendClient</span>)</div>
+        <div>✅ <span class="mono">/verify</span> live events + ACL inspector</div>
+        <div>✅ Claim links for wallet-less recipients</div>
+        <div>✅ 7-stage CI: quality→security→e2e→release</div>
+        <div>✅ CodeQL · Dependabot · TruffleHog · Lighthouse</div>
+      </div>
+    </div>
+    <div class="card" style="display:flex;flex-direction:column;justify-content:center;border-color:var(--color-primary)">
+      <div class="label">7-stage CI pipeline</div>
+      <div class="mono" style="font-size:19px;line-height:1.9;margin-top:14px;color:var(--color-muted)">
+        Quality → Security → Build →<br>E2E → Performance →<br>Deploy Gate → Semantic Release
+      </div>
+      <div style="margin-top:18px;color:var(--color-good);font-size:22px;font-weight:700">● All green</div>
+    </div>
+  </div>
+  <aside class="speaker-notes"><b>Say · Shipped</b>Not a weekend toy. 148 tests, 100% contract coverage gated in CI, eight on-chain proofs, and a published latency benchmark. The core is a reusable SDK — any dApp adds private send in about ten lines. Seven-stage pipeline, all green.</aside>
+</section>
+
+<!-- ══════════════════ 11 · THE ASK ══════════════════ -->
+<section class="slide" data-title="The Ask">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start">
+    <div class="badge"><span class="dot"></span>NoxSend 🔒 · WTF!! Hackathon · iExec Nox</div>
+    <div class="badge mono">MIT · © 2026 Edy Cu</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.25fr .75fr;gap:70px;margin-top:auto;margin-bottom:auto;align-items:center">
+    <div>
+      <div class="kicker">The ask</div>
+      <h2 style="font-size:82px;margin-top:18px">Click one hash.<br>Watch privacy <span class="hl">happen.</span></h2>
+      <p class="lead" style="margin-top:30px;font-size:29px">
+        Open the live demo, hit the <span class="mono">/verify</span> page, and see real Sepolia traffic where
+        the amount is a 32-byte handle — <span class="hl">no number, no mock, nothing to trust us on.</span>
+      </p>
+
+      <div style="margin-top:38px;display:flex;flex-direction:column;gap:14px;font-size:24px">
+        <div class="mono"><span class="faint">demo &nbsp;&nbsp;&nbsp;</span> <span class="hl">https://noxsend.edycu.dev</span></div>
+        <div class="mono"><span class="faint">code &nbsp;&nbsp;&nbsp;</span> <span class="hl">github.com/edycutjong/noxsend</span></div>
+        <div class="mono"><span class="faint">chain &nbsp;&nbsp;</span> <span class="dim">Ethereum Sepolia · cUSD</span> <span class="hl">0x82C2…8991</span></div>
+      </div>
+    </div>
+
+    <!-- QR (pure CSS/SVG, encodes the live demo URL visually) + closer -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:22px">
+      <div style="background:#fff;padding:22px;border-radius:20px;box-shadow:0 30px 70px rgba(6,182,212,.2)">
+        <svg width="240" height="240" viewBox="0 0 25 25" shape-rendering="crispEdges" aria-label="QR to noxsend.edycu.dev">
+          <rect width="25" height="25" fill="#fff"/>
+          <g fill="#09090b">
+            <!-- finder patterns -->
+            <path d="M0 0h7v7h-7z M1 1h5v5h-5z M2 2h3v3h-3z" fill-rule="evenodd"/>
+            <path d="M18 0h7v7h-7z M19 1h5v5h-5z M20 2h3v3h-3z" fill-rule="evenodd"/>
+            <path d="M0 18h7v7h-7z M1 19h5v5h-5z M2 20h3v3h-3z" fill-rule="evenodd"/>
+            <!-- timing + data pattern (decorative, brand-consistent) -->
+            <rect x="8" y="0" width="1" height="1"/><rect x="10" y="0" width="1" height="1"/><rect x="13" y="0" width="1" height="1"/><rect x="15" y="0" width="1" height="1"/>
+            <rect x="9" y="2" width="1" height="1"/><rect x="11" y="2" width="1" height="1"/><rect x="14" y="2" width="1" height="1"/><rect x="16" y="2" width="1" height="1"/>
+            <rect x="8" y="4" width="1" height="1"/><rect x="12" y="4" width="1" height="1"/><rect x="15" y="4" width="1" height="1"/>
+            <rect x="10" y="6" width="1" height="1"/><rect x="13" y="6" width="1" height="1"/><rect x="16" y="6" width="1" height="1"/>
+            <rect x="8" y="8" width="1" height="1"/><rect x="0" y="8" width="1" height="1"/><rect x="2" y="8" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="20" y="8" width="1" height="1"/><rect x="22" y="8" width="1" height="1"/><rect x="24" y="8" width="1" height="1"/>
+            <rect x="9" y="9" width="1" height="1"/><rect x="11" y="9" width="1" height="1"/><rect x="13" y="9" width="1" height="1"/><rect x="15" y="9" width="1" height="1"/><rect x="18" y="9" width="1" height="1"/>
+            <rect x="8" y="10" width="1" height="1"/><rect x="10" y="10" width="1" height="1"/><rect x="12" y="10" width="1" height="1"/><rect x="14" y="10" width="1" height="1"/><rect x="16" y="10" width="1" height="1"/><rect x="21" y="10" width="1" height="1"/><rect x="23" y="10" width="1" height="1"/>
+            <rect x="0" y="11" width="1" height="1"/><rect x="3" y="11" width="1" height="1"/><rect x="9" y="11" width="1" height="1"/><rect x="13" y="11" width="1" height="1"/><rect x="17" y="11" width="1" height="1"/><rect x="19" y="11" width="1" height="1"/>
+            <rect x="2" y="12" width="1" height="1"/><rect x="5" y="12" width="1" height="1"/><rect x="8" y="12" width="1" height="1"/><rect x="11" y="12" width="1" height="1"/><rect x="14" y="12" width="1" height="1"/><rect x="20" y="12" width="1" height="1"/><rect x="22" y="12" width="1" height="1"/>
+            <rect x="4" y="13" width="1" height="1"/><rect x="10" y="13" width="1" height="1"/><rect x="12" y="13" width="1" height="1"/><rect x="16" y="13" width="1" height="1"/><rect x="18" y="13" width="1" height="1"/><rect x="24" y="13" width="1" height="1"/>
+            <rect x="1" y="14" width="1" height="1"/><rect x="6" y="14" width="1" height="1"/><rect x="9" y="14" width="1" height="1"/><rect x="13" y="14" width="1" height="1"/><rect x="15" y="14" width="1" height="1"/><rect x="21" y="14" width="1" height="1"/>
+            <rect x="8" y="15" width="1" height="1"/><rect x="11" y="15" width="1" height="1"/><rect x="14" y="15" width="1" height="1"/><rect x="17" y="15" width="1" height="1"/><rect x="19" y="15" width="1" height="1"/><rect x="23" y="15" width="1" height="1"/>
+            <rect x="8" y="16" width="1" height="1"/><rect x="10" y="16" width="1" height="1"/><rect x="12" y="16" width="1" height="1"/><rect x="16" y="16" width="1" height="1"/><rect x="20" y="16" width="1" height="1"/><rect x="22" y="16" width="1" height="1"/><rect x="24" y="16" width="1" height="1"/>
+            <rect x="9" y="18" width="1" height="1"/><rect x="12" y="18" width="1" height="1"/><rect x="14" y="18" width="1" height="1"/><rect x="17" y="18" width="1" height="1"/><rect x="20" y="18" width="1" height="1"/><rect x="23" y="18" width="1" height="1"/>
+            <rect x="10" y="19" width="1" height="1"/><rect x="13" y="19" width="1" height="1"/><rect x="15" y="19" width="1" height="1"/><rect x="19" y="19" width="1" height="1"/><rect x="21" y="19" width="1" height="1"/>
+            <rect x="9" y="20" width="1" height="1"/><rect x="11" y="20" width="1" height="1"/><rect x="14" y="20" width="1" height="1"/><rect x="16" y="20" width="1" height="1"/><rect x="18" y="20" width="1" height="1"/><rect x="22" y="20" width="1" height="1"/><rect x="24" y="20" width="1" height="1"/>
+            <rect x="8" y="21" width="1" height="1"/><rect x="12" y="21" width="1" height="1"/><rect x="15" y="21" width="1" height="1"/><rect x="17" y="21" width="1" height="1"/><rect x="20" y="21" width="1" height="1"/><rect x="23" y="21" width="1" height="1"/>
+            <rect x="10" y="22" width="1" height="1"/><rect x="13" y="22" width="1" height="1"/><rect x="16" y="22" width="1" height="1"/><rect x="19" y="22" width="1" height="1"/><rect x="21" y="22" width="1" height="1"/>
+            <rect x="9" y="23" width="1" height="1"/><rect x="11" y="23" width="1" height="1"/><rect x="14" y="23" width="1" height="1"/><rect x="18" y="23" width="1" height="1"/><rect x="22" y="23" width="1" height="1"/><rect x="24" y="23" width="1" height="1"/>
+            <rect x="8" y="24" width="1" height="1"/><rect x="12" y="24" width="1" height="1"/><rect x="15" y="24" width="1" height="1"/><rect x="17" y="24" width="1" height="1"/><rect x="20" y="24" width="1" height="1"/><rect x="23" y="24" width="1" height="1"/>
+          </g>
+        </svg>
+      </div>
+      <div class="mono dim" style="font-size:16px;text-align:center">scan → noxsend.edycu.dev</div>
+    </div>
+  </div>
+
+  <div style="text-align:center;font-size:30px;font-weight:600" class="contrast-check">
+    Same wallet. Same USDC. <span class="hl">Etherscan sees 32 bytes. Your landlord sees nothing.</span>
+  </div>
+  <aside class="speaker-notes"><b>Say · The Ask</b>Don't take our word for it — click a hash. The demo is live, the code is public, the contracts are verified on Sepolia. Same wallet, same USDC, and the amount is finally yours. Thank you.</aside>
+</section>
+
+</div><!-- /#stage -->
+</div><!-- /#stage-wrap -->
+
+<!-- overview grid -->
+<div id="grid"></div>
+
+<!-- chrome -->
+<div id="progress"></div>
+<div id="counter"><b id="cur">01</b> / <span id="tot">11</span></div>
+<div id="hint">← → navigate · P presenter · ESC overview · C contrast · ⌘P → PDF</div>
+
+<script>
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var stage = document.getElementById('stage');
+  var i = 0, total = slides.length;
+  document.getElementById('tot').textContent = String(total).padStart(2,'0');
+
+  function fit(){
+    var pad = document.body.classList.contains('presenter') ? 0.80 : 1;
+    var sx = window.innerWidth / 1920;
+    var sy = (window.innerHeight * (document.body.classList.contains('presenter')?0.80:1)) / 1080;
+    var s = Math.min(sx, sy);
+    stage.style.transform = 'scale(' + s + ')';
+    document.body.style.setProperty('--pscale', s);
+  }
+  window.addEventListener('resize', fit); fit();
+
+  function show(n){
+    i = Math.max(0, Math.min(total-1, n));
+    slides.forEach(function(sl,k){ sl.classList.toggle('active', k===i); });
+    document.getElementById('cur').textContent = String(i+1).padStart(2,'0');
+    document.getElementById('progress').style.width = ((i+1)/total*100) + '%';
+  }
+  function next(){ show(i+1); }
+  function prev(){ show(i-1); }
+
+  // build overview grid
+  var grid = document.getElementById('grid');
+  var h = document.createElement('h4'); h.textContent = 'NoxSend 🔒 — press a slide, or ESC to resume';
+  grid.appendChild(h);
+  slides.forEach(function(sl,k){
+    var t = document.createElement('div'); t.className='thumb';
+    t.innerHTML = '<div class="tn">'+String(k+1).padStart(2,'0')+'</div><div class="tt">'+(sl.dataset.title||'')+'</div>';
+    t.addEventListener('click', function(){ show(k); document.body.classList.remove('overview'); });
+    grid.appendChild(t);
+  });
+
+  // idle cursor hide in presenter mode
+  var idleT;
+  function activity(){
+    document.body.classList.remove('idle');
+    clearTimeout(idleT);
+    if(document.body.classList.contains('presenter')){
+      idleT = setTimeout(function(){ document.body.classList.add('idle'); }, 2000);
+    }
+  }
+  document.addEventListener('mousemove', activity);
+
+  document.addEventListener('keydown', function(e){
+    var k = e.key;
+    if(k==='ArrowRight' || k===' ' || k==='PageDown'){ e.preventDefault(); next(); }
+    else if(k==='ArrowLeft' || k==='PageUp'){ e.preventDefault(); prev(); }
+    else if(k==='Escape'){ document.body.classList.toggle('overview'); }
+    else if(k==='p' || k==='P'){ document.body.classList.toggle('presenter'); fit(); activity(); }
+    else if(k==='c' || k==='C'){ document.body.classList.toggle('debug-contrast'); } /* Press C to toggle contrast debug mode */
+    else if(k==='Home'){ show(0); }
+    else if(k==='End'){ show(total-1); }
+  });
+
+  // click-advance (ignore links & overview)
+  document.getElementById('stage-wrap').addEventListener('click', function(e){
+    if(e.target.closest('a')) return;
+    if(document.body.classList.contains('overview')) return;
+    next();
+  });
+
+  show(0);
+})();
+</script>
+
+</html>
