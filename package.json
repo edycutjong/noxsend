@@ -1,6 +1,6 @@
 {
   "name": "noxsend-monorepo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "NoxSend — private send for the wallet you already have (iExec Nox / WTF!! Hackathon)",
   "license": "MIT",

@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/edycutjong/noxsend/compare/v1.0.0...v1.0.1) (2026-07-26)
+
+
+### Bug Fixes
+
+* **verify:** serve event stream via Etherscan logs API (server route) — public RPC blocks archive eth_getLogs ([1e08024](https://github.com/edycutjong/noxsend/commit/1e08024da3515cab80468e0b848b60dfdea6ffa2))
+
 # 1.0.0 (2026-07-26)
 
 
