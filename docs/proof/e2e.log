@@ -1,0 +1,49 @@
+Alice 0xd59278A8dCe73224591B259Fe31f28f3cb64629E | Landlord 0xbCcaec96dE81b489327E45cA7e467a18dc4E7B1a | Bob 0x7E92b6D35786b31065310A2BFbD6D636D43A48Bf | Auditor 0xd1a560044D530602A2068806D3ce5908c30d043E
+cUSD 0x82C281D7403e44d61968c2F49751a56877468991 | Escrow 0xF1Df763b425e20c16c039d80Ef1309c5a4A47f62
+
+=== [0] Fund Landlord + Bob with a little Sepolia ETH (only if low) ===
+  Landlord already funded
+  funded Bob 0.0025 ETH
+
+=== [1] Alice wraps 5,000 dUSD -> cUSD (amount public ONCE, at the wrapper boundary) ===
+  wrap tx https://sepolia.etherscan.io/tx/0x83e5e9db10b924bb9a2ff8275c1d8bc99832dfdc5336b8526fa415a284f6619d (gas 177989)
+    (bal(0xd59278): gateway/TEE catching up, retry 1/18)     Alice cUSD balance (decrypted by Alice): 19330.0 (was 14330.0)
+
+=== [2] Alice privately sends 1,850 cUSD to Landlord (encryptInput -> confidentialTransfer) ===
+  encryptInput -> handle 0x0000aa36a7230164211fa46cb975d13f65d41c45033a3c2557c503ab502f9554 (543ms)
+  confidentialTransfer tx https://sepolia.etherscan.io/tx/0xb03d69a2709e0095572659bdaa0c103c551b1dc2d80c13acdaf39a9ac84bcf1c (gas 196700)
+  calldata leaks "1850e6"? false  (must be false)
+  calldata carries the 32-byte handle? true  (true)
+
+=== [3] Landlord decrypts their OWN balance (viewer-gated, EIP-712 signed) ===
+    (bal(0xbCcaec): gateway/TEE catching up, retry 1/18)     Landlord balance handle 0x0000aa36a72301c777118e797691e75828c5fc808ecf0d27098a15c4e1db2a3c
+  Landlord decrypts: 3700.0 (was 1850.0)
+
+=== [4] Landlord grants Auditor viewer access (addViewer) — selective disclosure ===
+  addViewer tx https://sepolia.etherscan.io/tx/0x387fdc2f96725a12809c578c8f0c7957a7713b5f1bce56ec5edfcd8cc2abe462
+  isViewer(auditor)=true  isViewer(stranger)=false  (stranger stays false)
+    (auditor: gateway/TEE catching up, retry 1/18)       (auditor: gateway/TEE catching up, retry 2/18)     Auditor decrypts Landlord balance: 3700.0 (granted); stranger cannot.
+
+=== [5] Alice funds a claim link for Bob: 120 cUSD (time-bound operator -> createLink -> revoke) ===
+  setOperator(escrow, expiry) tx https://sepolia.etherscan.io/tx/0x6eff313edf8143e6fd933150e0104d770220af21c67c53fb216535d8dd239c6d (time-bound, revoked below)
+  createLink tx https://sepolia.etherscan.io/tx/0x93d639c9e0ccdd6e4c95af92d0805333c64776bfb082123fb8902eaf4a8113c0 (gas 283776)
+  escrow booked LinkCreated? true
+  setOperator(escrow, 0) revoke tx https://sepolia.etherscan.io/tx/0x1109daff318c33960c600796037d026b877da0537ef983a017ac3a753a83b7c9  (minimal authority window)
+
+=== [6] Bob claims the link with the secret ===
+  claim tx https://sepolia.etherscan.io/tx/0x18cfc9fa365892e06e918d0bd702f3a9c0e86affbbf69235217026be1a68d96c
+  Bob decrypts his balance: 240.0 (was 120.0)
+
+=== [7] Reclaim: Alice funds a short-lived link, lets it expire, refunds herself ===
+  funded short link (expiry 1783817560); waiting for expiry...
+  reclaim tx https://sepolia.etherscan.io/tx/0x110b56c68ac7a8261171ef22b88649c461d11b308b8594f7a8ea60ba0ffcc756  refunded=true
+
+=== [8] Landlord unwraps 1,850 cUSD -> dUSD: two-step (burn -> TEE public-decrypt -> finalize) ===
+  step1 unwrap(burn) tx https://sepolia.etherscan.io/tx/0xe5645f6662c7af8161da08adae8fae559be8fd92e065cd0bd1ee93c038b932de  requestId 0x0000aa36a72301f7...
+  step2 TEE public-decrypt -> 1850.0 dUSD, proof 0x80669d54f76f657b...
+  step3 finalizeUnwrap tx https://sepolia.etherscan.io/tx/0x205905ecc24395f307d1f0b73cfd2b51e9bd41294b1ca6749671d208dd8548b9 (gas 57852)
+  Landlord dUSD 1850.0 -> 3700.0  (released against the proof)
+
+ALL STEPS GREEN. Deployer ETH remaining: 0.050148147816768733
+Zero mock data: every number came from the live Nox gateway + Sepolia contracts.
+EXIT=0
