@@ -25,6 +25,7 @@ build/
 # misc
 .DS_Store
 *.log
+!docs/proof/*.log   # keep committed on-chain proof logs (judge-facing, linked from README)
 npm-debug.log*
 .vercel
 .idea/
