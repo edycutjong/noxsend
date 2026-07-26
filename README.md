@@ -30,6 +30,7 @@
   <p><em>✅ Live on Ethereum Sepolia — confidential transfers, claim-links & auditor grants proven on-chain. 148 tests green. Not a mock.</em></p>
 
 </div>
+
 ---
 
 > **Etherscan sees 32 bytes. Your landlord sees nothing.**
