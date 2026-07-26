@@ -1,3 +1,18 @@
+# [1.1.0](https://github.com/edycutjong/noxsend/compare/v1.0.1...v1.1.0) (2026-07-26)
+
+
+### Bug Fixes
+
+* **pitch:** letterbox + page background match slide bg — deck fills the whole screen at any aspect ratio ([e2de887](https://github.com/edycutjong/noxsend/commit/e2de887594349905885813ecdf3f457e0b3faa77))
+* **security:** npm audit fix ([a8a1bee](https://github.com/edycutjong/noxsend/commit/a8a1bee73cef127534b189c6552e4e7ffd01070a))
+
+
+### Features
+
+* **web:** micro-animations — scroll-reveal, hover-lift, press feedback (reduced-motion safe) ([6a4fa88](https://github.com/edycutjong/noxsend/commit/6a4fa88c62c57169c268fb6b86a081025d1bdaff))
+* **web:** richer landing page — one-flow, live-proof stats, CTAs, honest FAQ for first-time visitors ([4dfb465](https://github.com/edycutjong/noxsend/commit/4dfb465ef27056c63e87f7b7a5426e44ba840a6b))
+* **web:** universal pressable feedback — press + keyboard focus-visible on all interactive elements (a11y) ([6a1f310](https://github.com/edycutjong/noxsend/commit/6a1f310735775cce45c0577300ceae3b80374168))
+
 ## [1.0.1](https://github.com/edycutjong/noxsend/compare/v1.0.0...v1.0.1) (2026-07-26)
 
 
