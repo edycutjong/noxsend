@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Contract, JsonRpcProvider } from 'ethers';
+import { Contract, JsonRpcProvider, Interface } from 'ethers';
 import { ABIS, CONTRACTS, NETWORK, shortAddr } from '@/lib/contracts';
 import { describeHandle, isHandle } from '@noxsend/core';
 import { explorerAddr, explorerTx } from '@/hooks/useNox';
@@ -59,20 +59,34 @@ function EventFeed() {
     let alive = true;
     (async () => {
       try {
-        const p = new JsonRpcProvider(NETWORK.rpcUrl, 11155111, { staticNetwork: true });
-        const cusd = new Contract(CONTRACTS.confidentialUSD, ABIS.CONFIDENTIAL_USD_ABI as unknown as string[], p);
-        const escrow = new Contract(CONTRACTS.sendLinkEscrow, ABIS.SEND_LINK_ESCROW_ABI as unknown as string[], p);
-        const head = await p.getBlockNumber();
-        const from = Math.max(0, head - 45000);
-        const [transfers, created, claimed] = await Promise.all([
-          cusd.queryFilter(cusd.filters.ConfidentialTransfer(), from, head),
-          escrow.queryFilter(escrow.filters.LinkCreated(), from, head),
-          escrow.queryFilter(escrow.filters.LinkClaimed(), from, head),
+        // Historical logs via the Etherscan-backed /api/logs route (the public RPC
+        // blocks archive eth_getLogs). Decoded client-side with the contract ABIs.
+        const cusdI = new Interface(ABIS.CONFIDENTIAL_USD_ABI as any);
+        const escrowI = new Interface(ABIS.SEND_LINK_ESCROW_ABI as any);
+        const fetchLogs = async (addr: string) => {
+          const r = await fetch(`/api/logs?address=${addr}&fromBlock=0`, { cache: 'no-store' });
+          const j = await r.json();
+          return (Array.isArray(j.result) ? j.result : []) as any[];
+        };
+        const [cusdLogs, escrowLogs] = await Promise.all([
+          fetchLogs(CONTRACTS.confidentialUSD),
+          fetchLogs(CONTRACTS.sendLinkEscrow),
         ]);
         const evs: Evt[] = [];
-        for (const e of transfers as any[]) evs.push({ kind: 'ConfidentialTransfer', tx: e.transactionHash, block: e.blockNumber, detail: `${shortAddr(e.args?.from)} → ${shortAddr(e.args?.to)} · handle ${String(e.args?.amount).slice(0, 12)}…` });
-        for (const e of created as any[]) evs.push({ kind: 'LinkCreated', tx: e.transactionHash, block: e.blockNumber, detail: `by ${shortAddr(e.args?.from)}` });
-        for (const e of claimed as any[]) evs.push({ kind: 'LinkClaimed', tx: e.transactionHash, block: e.blockNumber, detail: `to ${shortAddr(e.args?.to)}` });
+        const bn = (l: any) => parseInt(l.blockNumber, 16);
+        for (const l of cusdLogs) {
+          try {
+            const pl = cusdI.parseLog({ topics: l.topics, data: l.data });
+            if (pl?.name === 'ConfidentialTransfer') evs.push({ kind: 'ConfidentialTransfer', tx: l.transactionHash, block: bn(l), detail: `${shortAddr(pl.args?.from)} → ${shortAddr(pl.args?.to)} · handle ${String(pl.args?.amount).slice(0, 12)}…` });
+          } catch { /* not this event */ }
+        }
+        for (const l of escrowLogs) {
+          try {
+            const pl = escrowI.parseLog({ topics: l.topics, data: l.data });
+            if (pl?.name === 'LinkCreated') evs.push({ kind: 'LinkCreated', tx: l.transactionHash, block: bn(l), detail: `by ${shortAddr(pl.args?.from)}` });
+            else if (pl?.name === 'LinkClaimed') evs.push({ kind: 'LinkClaimed', tx: l.transactionHash, block: bn(l), detail: `to ${shortAddr(pl.args?.to)}` });
+          } catch { /* not this event */ }
+        }
         evs.sort((a, b) => b.block - a.block);
         if (alive) setEvents(evs.slice(0, 15));
       } catch (e: any) {
@@ -84,7 +98,7 @@ function EventFeed() {
 
   return (
     <div className="glass p-6">
-      <span className="label">Live event stream (last ~45k blocks)</span>
+      <span className="label">Live event stream (on-chain · via Etherscan)</span>
       {error && <p className="text-sm text-red-300">{error}</p>}
       {!events && !error && <p className="text-sm text-mid">Loading from Sepolia…</p>}
       {events && events.length === 0 && <p className="text-sm text-mid">No recent events in range.</p>}
