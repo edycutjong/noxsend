@@ -20,7 +20,7 @@ test.describe("Core flow — value prop & proof", () => {
     ).toBeVisible();
 
     // Honest-limitations footer is present on every page.
-    await expect(page.getByText(/amount-privacy only/i)).toBeVisible();
+    await expect(page.getByText(/amount-privacy only \(addresses public\)/i)).toBeVisible();
   });
 
   test("claim page offers a wallet-less create-link surface", async ({ page }) => {
