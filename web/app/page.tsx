@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useNox, explorerTx } from '@/hooks/useNox';
 import { SealedAmount, LockIcon } from '@/components/SealedAmount';
@@ -14,6 +14,14 @@ const CUSD_ETHERSCAN = `https://sepolia.etherscan.io/address/${CUSD_ADDRESS}`;
 export default function Home() {
   const nox = useNox();
   const [err, setErr] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) return;
+    const els = Array.from(document.querySelectorAll('.reveal'));
+    const io = new IntersectionObserver((ents) => ents.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    els.forEach(el => io.observe(el));
+    return () => io.disconnect();
+  }, [nox.connected]);
 
   const run = async (label: string, fn: () => Promise<void>) => {
     setErr(null);
@@ -95,10 +103,10 @@ function FlowStrip() {
   ];
   return (
     <section className="pt-2">
-      <span className="label">The one flow</span>
+      <span className="label reveal">The one flow</span>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {steps.map((s) => (
-          <div key={s.n} className="glass flex flex-col gap-3 p-5">
+        {steps.map((s, i) => (
+          <div key={s.n} className="glass reveal lift flex flex-col gap-3 p-5" style={{ ['--d' as any]: `${i * 80}ms` }}>
             <div className="flex items-center gap-3">
               <span className="step-num">{s.n}</span>
               <span className="font-display text-sm font-semibold text-hi">{s.title}</span>
@@ -119,21 +127,21 @@ function ProofSection() {
     { num: 'TDX', label: 'ERC-7984 · Intel TDX' },
   ];
   return (
-    <section className="glass p-6">
+    <section className="glass reveal p-6">
       <span className="label">Live proof — verify every claim yourself</span>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        {stats.map((s) => (
-          <div key={s.label} className="stat">
+        {stats.map((s, i) => (
+          <div key={s.label} className="stat reveal lift" style={{ ['--d' as any]: `${i * 80}ms` }}>
             <span className="stat-num">{s.num}</span>
             <span className="text-xs text-mid">{s.label}</span>
           </div>
         ))}
       </div>
       <div className="mt-5 flex flex-wrap gap-2">
-        <Link href="/verify" className="btn btn-primary">Open /verify</Link>
-        <a className="btn btn-ghost" href={GITHUB_URL} target="_blank" rel="noreferrer">View on GitHub ↗</a>
-        <a className="btn btn-ghost" href="/pitch" target="_blank" rel="noreferrer">Pitch deck ↗</a>
-        <a className="btn btn-ghost" href={CUSD_ETHERSCAN} target="_blank" rel="noreferrer">Verified cUSD contract ↗</a>
+        <Link href="/verify" className="btn btn-primary lift">Open /verify</Link>
+        <a className="btn btn-ghost lift" href={GITHUB_URL} target="_blank" rel="noreferrer">View on GitHub ↗</a>
+        <a className="btn btn-ghost lift" href="/pitch" target="_blank" rel="noreferrer">Pitch deck ↗</a>
+        <a className="btn btn-ghost lift" href={CUSD_ETHERSCAN} target="_blank" rel="noreferrer">Verified cUSD contract ↗</a>
       </div>
       <p className="mt-3 text-xs text-mid">
         <span className="font-mono">/verify</span> streams live Sepolia events and a live ACL inspector — zero mock.
@@ -172,10 +180,10 @@ function Faq() {
   ];
   return (
     <section className="pt-2">
-      <span className="label">How it works · FAQ</span>
+      <span className="label reveal">How it works · FAQ</span>
       <div className="grid gap-3">
-        {items.map((it) => (
-          <details key={it.q} className="faq">
+        {items.map((it, i) => (
+          <details key={it.q} className="faq reveal" style={{ ['--d' as any]: `${i * 60}ms` }}>
             <summary>
               <span className="text-sm font-medium">{it.q}</span>
               <span className="faq-caret text-mid" aria-hidden>▾</span>
