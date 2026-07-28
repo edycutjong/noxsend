@@ -27,7 +27,7 @@
 
   <br/>
 
-  <p><em>✅ Live on Ethereum Sepolia — confidential transfers, claim-links & auditor grants proven on-chain. 148 tests green. Not a mock.</em></p>
+  <p>✅ <em>Live on Ethereum Sepolia — confidential transfers, claim-links & auditor grants proven on-chain. 148 tests green. Not a mock.</em></p>
 
 </div>
 
