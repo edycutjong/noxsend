@@ -40,7 +40,7 @@
   "devDependencies": {
     "@iexec-nox/nox-confidential-contracts": "^0.2.2",
     "@iexec-nox/nox-protocol-contracts": "^0.2.4",
-    "@lhci/cli": "^0.14.0",
+    "@lhci/cli": "^0.15.1",
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
     "@playwright/test": "^1.52.0",
     "@types/node": "^22.20.1",
