@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/edycutjong/noxsend/compare/v1.3.0...v1.3.1) (2026-07-28)
+
+
+### Bug Fixes
+
+* **pitch:** use scannable PNG QR (data-URI) encoding the full https URL ([083e2db](https://github.com/edycutjong/noxsend/commit/083e2db6da771a2b323ac258e6732ef6ea1cc0cd))
+
 # [1.3.0](https://github.com/edycutjong/noxsend/compare/v1.2.0...v1.3.0) (2026-07-28)
 
 
