@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/edycutjong/noxsend/compare/v1.2.0...v1.3.0) (2026-07-28)
+
+
+### Features
+
+* **pitch:** real QR + SVG icons + share metadata ([ded1bb7](https://github.com/edycutjong/noxsend/commit/ded1bb760bfb9e4670944b46ba9601b3290a2734))
+
 # [1.2.0](https://github.com/edycutjong/noxsend/compare/v1.1.0...v1.2.0) (2026-07-28)
 
 
