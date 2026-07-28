@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/edycutjong/noxsend/compare/v1.3.1...v1.3.2) (2026-07-28)
+
+
+### Bug Fixes
+
+* **pitch:** add flex:none to #stage so it fills the viewport (was shrinking to 1333px) ([07cfe9a](https://github.com/edycutjong/noxsend/commit/07cfe9a22de323ea8ebe019e75ecdb32a22c546d)), closes [#stage](https://github.com/edycutjong/noxsend/issues/stage)
+
 ## [1.3.1](https://github.com/edycutjong/noxsend/compare/v1.3.0...v1.3.1) (2026-07-28)
 
 
