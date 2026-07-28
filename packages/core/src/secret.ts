@@ -18,7 +18,8 @@ export function secretHash(secret: string): string {
 /** Build a claim URL with the secret in the fragment (never sent to a server). */
 export function buildClaimLink(baseUrl: string, secret: string): string {
   if (!HEX32.test(secret)) throw new Error('secret must be a 32-byte hex string');
-  const base = baseUrl.replace(/#.*$/, '').replace(/\/$/, '');
+  const noFrag = baseUrl.indexOf('#') >= 0 ? baseUrl.slice(0, baseUrl.indexOf('#')) : baseUrl;
+  const base = noFrag.endsWith('/') ? noFrag.slice(0, -1) : noFrag;
   return `${base}/claim#${secret}`;
 }
 
