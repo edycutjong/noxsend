@@ -6,7 +6,7 @@
 
   <br/>
 
-  [![Demo Video](https://img.shields.io/badge/▶_Demo-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/xxxxxxxxxxx)
+  [![Demo Video](https://img.shields.io/badge/▶_Demo-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/_Vd4jYN2zvo)
   [![Live Demo](https://img.shields.io/badge/🚀_Live-Demo-06b6d4?style=for-the-badge)](https://noxsend.edycu.dev)
   [![Pitch Deck](https://img.shields.io/badge/📊_Pitch-Deck-f59e0b?style=for-the-badge)](https://noxsend.edycu.dev/pitch)
   [![WTF!! Hackathon](https://img.shields.io/badge/WTF!!_Hackathon-iExec_Nox-8b5cf6?style=for-the-badge)](https://dorahacks.io/hackathon/wtf-hackathon)
@@ -21,7 +21,7 @@
   ![ERC-7984](https://img.shields.io/badge/ERC--7984-Confidential_Token-7c3aed?style=flat)
   ![Tests](https://img.shields.io/badge/tests-148_passing-3fb950?style=flat)
   ![Coverage](https://img.shields.io/badge/contracts_coverage-100%25-3fb950?style=flat)
-  [![Release](https://img.shields.io/badge/release-v1.0.0-0ea5e9?style=flat)](https://github.com/edycutjong/noxsend/releases)
+  [![Release](https://img.shields.io/badge/release-v1.1.0-0ea5e9?style=flat)](https://github.com/edycutjong/noxsend/releases)
   [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat)](https://opensource.org/licenses/MIT)
   [![CI](https://github.com/edycutjong/noxsend/actions/workflows/ci.yml/badge.svg)](https://github.com/edycutjong/noxsend/actions/workflows/ci.yml)
 
@@ -29,6 +29,20 @@
 
   <p><em>✅ Live on Ethereum Sepolia — confidential transfers, claim-links & auditor grants proven on-chain. 148 tests green. Not a mock.</em></p>
 
+</div>
+
+<div align="center">
+  <img src="docs/screenshots/hero.png" alt="NoxSend — private send, live on Ethereum Sepolia" width="100%">
+  <p><sub>The live app at <a href="https://noxsend.edycu.dev">noxsend.edycu.dev</a> — the amount is a 32-byte handle, decryptable only by whom you choose.</sub></p>
+</div>
+
+<div align="center">
+<table>
+<tr>
+<td width="50%"><img src="docs/screenshots/flow.png" alt="NoxSend — the one flow and live proof stats"><br><sub>The one flow — wrap → private send → reveal, with live proof stats.</sub></td>
+<td width="50%"><img src="docs/screenshots/verify.png" alt="NoxSend — /verify dashboard"><br><sub><code>/verify</code> — live Sepolia event stream + ACL inspector, zero mock.</sub></td>
+</tr>
+</table>
 </div>
 
 ---
