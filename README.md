@@ -6,12 +6,12 @@
 
   <br/>
 
-  [![Demo Video](https://img.shields.io/badge/▶_Demo-YouTube-FF0000?style=flat&logo=youtube&logoColor=white)](https://youtu.be/_Vd4jYN2zvo)
-  [![Live Demo](https://img.shields.io/badge/🚀_Live-Demo-06b6d4?style=flat)](https://noxsend.edycu.dev)
-  [![Pitch Deck](https://img.shields.io/badge/📊_Pitch-Deck-f59e0b?style=flat)](https://noxsend.edycu.dev/pitch)
-  [![WTF!! Hackathon](https://img.shields.io/badge/WTF!!_Hackathon-iExec_Nox-8b5cf6?style=flat)](https://dorahacks.io/hackathon/wtf-hackathon)
-  [![DoraHacks BUIDL](https://img.shields.io/badge/DoraHacks-BUIDL_47258-5b21b6?style=flat&logo=dora&logoColor=white)](https://dorahacks.io/buidl/47258)
-  [![Verified Contract](https://img.shields.io/badge/🔍_Verified-Contract-21325b?style=flat&logo=ethereum&logoColor=white)](https://sepolia.etherscan.io/address/0x82C281D7403e44d61968c2F49751a56877468991)
+  [![Demo Video](https://img.shields.io/badge/▶_Demo-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/_Vd4jYN2zvo)
+  [![Live Demo](https://img.shields.io/badge/🚀_Live-Demo-06b6d4?style=for-the-badge)](https://noxsend.edycu.dev)
+  [![Pitch Deck](https://img.shields.io/badge/📊_Pitch-Deck-f59e0b?style=for-the-badge)](https://noxsend.edycu.dev/pitch)
+  [![WTF!! Hackathon](https://img.shields.io/badge/WTF!!_Hackathon-iExec_Nox-8b5cf6?style=for-the-badge)](https://dorahacks.io/hackathon/wtf-hackathon)
+  [![DoraHacks BUIDL](https://img.shields.io/badge/DoraHacks-BUIDL_47258-5b21b6?style=for-the-badge&logo=dora&logoColor=white)](https://dorahacks.io/buidl/47258)
+  [![Verified Contract](https://img.shields.io/badge/🔍_Verified-Contract-21325b?style=for-the-badge&logo=ethereum&logoColor=white)](https://sepolia.etherscan.io/address/0x82C281D7403e44d61968c2F49751a56877468991)
 
   <br/>
 
