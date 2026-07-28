@@ -1,3 +1,15 @@
+# [1.2.0](https://github.com/edycutjong/noxsend/compare/v1.1.0...v1.2.0) (2026-07-28)
+
+
+### Bug Fixes
+
+* **security:** resolve CodeQL high-severity alerts (ReDoS + DOM XSS) ([0b5ec8b](https://github.com/edycutjong/noxsend/commit/0b5ec8b9d313a6c71c0eb62315370786d945e3e5)), closes [hi#severity](https://github.com/hi/issues/severity)
+
+
+### Features
+
+* **web:** Cipher-Noir landing redesign + real demo video + README screenshots ([3c50585](https://github.com/edycutjong/noxsend/commit/3c5058531ed8527f5e9ac67976c38d1d12ebb201))
+
 # [1.1.0](https://github.com/edycutjong/noxsend/compare/v1.0.1...v1.1.0) (2026-07-26)
 
 
